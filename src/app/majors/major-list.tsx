@@ -34,7 +34,7 @@ export default function MajorListPage() {
       <header className="bg-black py-6">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href="/majors" className="flex items-center space-x-2">
               <Compass className="h-6 w-6 text-purple-400" />
               <span className="text-2xl font-bold text-white">DegreeCompass</span>
             </Link>
@@ -81,7 +81,7 @@ export default function MajorListPage() {
         </Card>
 
         <div className="mt-12 text-center">
-          <Link href="/all-majors">
+          <Link href="/majors/all">
             <Button className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white text-lg px-8 py-3 rounded-full">
               View All Majors
             </Button>
