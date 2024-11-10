@@ -34,9 +34,11 @@ export default function MajorDetailPage() {
               <Link href="/compare" className="text-gray-300 hover:text-white">Compare</Link>
               <Link href="/resources" className="text-gray-300 hover:text-white">Resources</Link>
             </nav>
+            <Link href="/majors">
             <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
               Get Started
             </Button>
+            </Link>
           </div>
         </div>
       </header>
@@ -122,7 +124,8 @@ export default function MajorDetailPage() {
                 <p className="text-gray-300 mb-4">Compare {majorDetails.name} with:</p>
                 <div className="space-y-2">
                   {compareMajors.map((major) => (
-                    <Link key={major.id} href={`/compare/${majorDetails.id}/${major.id}`}>
+                    <Link key={major.id} href={`/compare/`}>
+                    {/* <Link key={major.id} href={`/compare/${majorDetails.id}/${major.id}`}> */}
                       <Button variant="outline" className="w-full text-left justify-start bg-gray-700 hover:bg-gray-600 border-gray-600">
                         {major.name}
                       </Button>

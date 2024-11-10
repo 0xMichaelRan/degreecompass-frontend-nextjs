@@ -73,9 +73,11 @@ export default function AllMajorsPage() {
               <Link href="/compare" className="text-gray-300 hover:text-white">Compare</Link>
               <Link href="/resources" className="text-gray-300 hover:text-white">Resources</Link>
             </nav>
+            <Link href="/majors">
             <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
               Get Started
             </Button>
+            </Link>
           </div>
         </div>
       </header>
