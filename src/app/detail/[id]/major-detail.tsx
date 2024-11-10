@@ -1,8 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Compass, BookOpen, ArrowRight, School } from "lucide-react"
+import { Compass, BookOpen, ArrowRight, School, Users } from "lucide-react"
 
 // This would typically come from a database or API
 const majorDetails = {
@@ -14,12 +13,10 @@ const majorDetails = {
   highSchoolSubjects: ["Mathematics", "Physics", "Computer Studies", "Logic"]
 }
 
-const allMajors = [
-  { id: 1, name: "Computer Science" },
+const compareMajors = [
   { id: 2, name: "Business Administration" },
-  { id: 3, name: "Psychology" },
-  { id: 4, name: "Mechanical Engineering" },
-  { id: 5, name: "Biology" },
+  { id: 3, name: "Electrical Engineering" },
+  { id: 4, name: "Data Science" },
 ]
 
 export default function MajorDetailPage() {
@@ -51,9 +48,23 @@ export default function MajorDetailPage() {
         
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
-            <h1 className="text-4xl font-bold mb-4 text-white">{majorDetails.name}</h1>
+            <h1 className="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+              {majorDetails.name}
+            </h1>
             <p className="text-xl text-gray-300 mb-8">{majorDetails.shortExplanation}</p>
             
+            <div className="flex space-x-4 mb-8">
+              <Button className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white">
+                Apply Now
+              </Button>
+              <Button variant="outline" className="text-purple-400 border-purple-400 hover:bg-purple-400 hover:text-white">
+                Download Brochure
+              </Button>
+              <Button variant="outline" className="text-pink-400 border-pink-400 hover:bg-pink-400 hover:text-white">
+                Schedule a Call
+              </Button>
+            </div>
+
             <Card className="bg-gray-800 border-gray-700 mb-8">
               <CardHeader>
                 <CardTitle className="flex items-center text-white">
@@ -62,45 +73,44 @@ export default function MajorDetailPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="list-disc list-inside text-gray-300">
+                <ul className="grid grid-cols-2 gap-2">
                   {majorDetails.commonCourses.map((course, index) => (
-                    <li key={index}>{course}</li>
+                    <li key={index} className="flex items-center text-gray-300">
+                      <ArrowRight className="h-4 w-4 mr-2 text-purple-400" />
+                      {course}
+                    </li>
                   ))}
                 </ul>
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-700 mb-8">
-              <CardHeader>
-                <CardTitle className="flex items-center text-white">
-                  <ArrowRight className="h-5 w-5 mr-2" />
-                  Related Majors
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc list-inside text-gray-300">
-                  {majorDetails.relatedMajors.map((major, index) => (
-                    <li key={index}>{major}</li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold mb-4 flex items-center">
+                <Users className="h-5 w-5 mr-2 text-purple-400" />
+                Related Majors
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {majorDetails.relatedMajors.map((major, index) => (
+                  <span key={index} className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm">
+                    {major}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="flex items-center text-white">
-                  <School className="h-5 w-5 mr-2" />
-                  Most Related High School Subjects
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc list-inside text-gray-300">
-                  {majorDetails.highSchoolSubjects.map((subject, index) => (
-                    <li key={index}>{subject}</li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            <div>
+              <h2 className="text-2xl font-semibold mb-4 flex items-center">
+                <School className="h-5 w-5 mr-2 text-purple-400" />
+                Most Related High School Subjects
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {majorDetails.highSchoolSubjects.map((subject, index) => (
+                  <span key={index} className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
+                    {subject}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div>
@@ -109,24 +119,16 @@ export default function MajorDetailPage() {
                 <CardTitle className="text-white">Compare Majors</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-300 mb-4">Select another major to compare with {majorDetails.name}:</p>
-                <Select>
-                  <SelectTrigger className="w-full bg-gray-700 text-white border-gray-600">
-                    <SelectValue placeholder="Choose a major" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-700 text-white border-gray-600">
-                    {allMajors.filter(m => m.id !== majorDetails.id).map((major) => (
-                      <SelectItem key={major.id} value={major.id.toString()}>
+                <p className="text-gray-300 mb-4">Compare {majorDetails.name} with:</p>
+                <div className="space-y-2">
+                  {compareMajors.map((major) => (
+                    <Link key={major.id} href={`/compare/${majorDetails.id}/${major.id}`}>
+                      <Button variant="outline" className="w-full text-left justify-start bg-gray-700 hover:bg-gray-600 border-gray-600">
                         {major.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Link href="/compare">
-                  <Button className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white">
-                    Compare Majors
-                  </Button>
-                </Link>
+                      </Button>
+                    </Link>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </div>

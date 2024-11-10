@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Compass, BookOpen, ArrowRight, School, Briefcase, DollarSign, TrendingUp } from "lucide-react"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Compass, BookOpen, Briefcase, School } from "lucide-react"
 
 // This would typically come from a database or API based on user selection
 const comparisonData = {
@@ -11,8 +11,6 @@ const comparisonData = {
     shortExplanation: "Study of computation, information, and automation.",
     commonCourses: ["Programming", "Data Structures", "Algorithms", "Databases", "AI", "Software Engineering"],
     careerPaths: ["Software Developer", "Data Scientist", "AI Specialist", "Cybersecurity Analyst", "Cloud Architect"],
-    averageSalary: 92000,
-    jobGrowth: "13% (Much faster than average)",
     highSchoolSubjects: ["Mathematics", "Physics", "Computer Studies", "Logic"]
   },
   major2: {
@@ -21,8 +19,6 @@ const comparisonData = {
     shortExplanation: "Study of managing business operations and resources.",
     commonCourses: ["Management", "Finance", "Marketing", "Business Ethics", "Organizational Behavior", "Strategy"],
     careerPaths: ["Business Manager", "Financial Analyst", "Marketing Specialist", "HR Manager", "Entrepreneur"],
-    averageSalary: 73000,
-    jobGrowth: "8% (As fast as average)",
     highSchoolSubjects: ["Mathematics", "Economics", "Business Studies", "English"]
   }
 }
@@ -54,97 +50,97 @@ export default function MajorComparisonPage() {
           Major Comparison
         </h1>
         
-        <div className="grid md:grid-cols-2 gap-8">
-          {Object.values(comparisonData).map((major, index) => (
-            <div key={major.id} className={`space-y-6 ${index === 0 ? 'md:pr-4' : 'md:pl-4'}`}>
-              <div className={`p-6 rounded-lg bg-gradient-to-br ${index === 0 ? 'from-blue-500 to-purple-600' : 'from-pink-500 to-orange-600'}`}>
-                <h2 className="text-3xl font-bold mb-2 text-white">{major.name}</h2>
-                <p className="text-xl text-gray-200">{major.shortExplanation}</p>
-              </div>
-              
-              <Card className="bg-gray-800 border-gray-700 overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-gray-800 to-gray-700">
-                  <CardTitle className="flex items-center text-white">
-                    <BookOpen className="h-5 w-5 mr-2" />
+        <div className="overflow-x-auto">
+          <Table className="w-full">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-1/3">Field</TableHead>
+                <TableHead className="w-1/3 text-center bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                  {comparisonData.major1.name}
+                </TableHead>
+                <TableHead className="w-1/3 text-center bg-gradient-to-r from-pink-500 to-orange-600 text-white">
+                  {comparisonData.major2.name}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell className="font-medium">Description</TableCell>
+                <TableCell>{comparisonData.major1.shortExplanation}</TableCell>
+                <TableCell>{comparisonData.major2.shortExplanation}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">
+                  <div className="flex items-center">
+                    <BookOpen className="h-5 w-5 mr-2 text-purple-400" />
                     Common Courses
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-4">
-                  <ul className="space-y-1 text-gray-300">
-                    {major.commonCourses.map((course, idx) => (
-                      <li key={idx} className="flex items-center">
-                        <ArrowRight className="h-4 w-4 mr-2 text-purple-400" />
-                        {course}
-                      </li>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <ul className="list-disc list-inside">
+                    {comparisonData.major1.commonCourses.map((course, index) => (
+                      <li key={index}>{course}</li>
                     ))}
                   </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gray-800 border-gray-700 overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-gray-800 to-gray-700">
-                  <CardTitle className="flex items-center text-white">
-                    <Briefcase className="h-5 w-5 mr-2" />
+                </TableCell>
+                <TableCell>
+                  <ul className="list-disc list-inside">
+                    {comparisonData.major2.commonCourses.map((course, index) => (
+                      <li key={index}>{course}</li>
+                    ))}
+                  </ul>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">
+                  <div className="flex items-center">
+                    <Briefcase className="h-5 w-5 mr-2 text-purple-400" />
                     Career Paths
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-4">
-                  <ul className="space-y-1 text-gray-300">
-                    {major.careerPaths.map((path, idx) => (
-                      <li key={idx} className="flex items-center">
-                        <ArrowRight className="h-4 w-4 mr-2 text-purple-400" />
-                        {path}
-                      </li>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <ul className="list-disc list-inside">
+                    {comparisonData.major1.careerPaths.map((path, index) => (
+                      <li key={index}>{path}</li>
                     ))}
                   </ul>
-                </CardContent>
-              </Card>
-
-              <div className="grid grid-cols-2 gap-4">
-                <Card className="bg-gray-800 border-gray-700 overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-gray-800 to-gray-700">
-                    <CardTitle className="flex items-center text-white text-sm">
-                      <DollarSign className="h-4 w-4 mr-1" />
-                      Avg. Salary
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-2xl font-bold text-green-400">${major.averageSalary.toLocaleString()}</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-gray-800 border-gray-700 overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-gray-800 to-gray-700">
-                    <CardTitle className="flex items-center text-white text-sm">
-                      <TrendingUp className="h-4 w-4 mr-1" />
-                      Job Growth
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-lg font-semibold text-blue-400">{major.jobGrowth}</p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Card className="bg-gray-800 border-gray-700 overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-gray-800 to-gray-700">
-                  <CardTitle className="flex items-center text-white">
-                    <School className="h-5 w-5 mr-2" />
+                </TableCell>
+                <TableCell>
+                  <ul className="list-disc list-inside">
+                    {comparisonData.major2.careerPaths.map((path, index) => (
+                      <li key={index}>{path}</li>
+                    ))}
+                  </ul>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">
+                  <div className="flex items-center">
+                    <School className="h-5 w-5 mr-2 text-purple-400" />
                     Related High School Subjects
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-4">
-                  <ul className="flex flex-wrap gap-2">
-                    {major.highSchoolSubjects.map((subject, idx) => (
-                      <li key={idx} className="bg-gray-700 text-gray-200 px-3 py-1 rounded-full text-sm">
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex flex-wrap gap-2">
+                    {comparisonData.major1.highSchoolSubjects.map((subject, index) => (
+                      <span key={index} className="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
                         {subject}
-                      </li>
+                      </span>
                     ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          ))}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex flex-wrap gap-2">
+                    {comparisonData.major2.highSchoolSubjects.map((subject, index) => (
+                      <span key={index} className="bg-pink-500 text-white px-2 py-1 rounded-full text-sm">
+                        {subject}
+                      </span>
+                    ))}
+                  </div>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </div>
 
         <div className="mt-12 text-center">
