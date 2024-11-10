@@ -1,5 +1,5 @@
 import LoginPage from "@/app/user/login/login"
 
-export default function LoginPage() {
+export default function Main() {
   return <LoginPage />
 }
