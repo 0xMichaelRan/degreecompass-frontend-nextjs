@@ -107,7 +107,10 @@ export default function ResourcesPage() {
                         Settings
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => {
+                    setIsLoggedIn(false);
+                    setMobileMenuOpen(false);
+                  }}>
                         Log out
                   </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -139,8 +142,14 @@ export default function ResourcesPage() {
             <Link href="/resources" className="text-white font-semibold py-2">Resources</Link>
             <Link href="/profile" className="text-gray-300 hover:text-white py-2">Profile</Link>
             <Link href="/settings" className="text-gray-300 hover:text-white py-2">Settings</Link>
-            <Button variant="ghost" className="justify-start px-0 hover:bg-transparent hover:text-white">
-              Log out
+            <Button 
+              variant="ghost" 
+              className="justify-start px-0 hover:bg-transparent hover:text-white"
+              onClick={() => {
+                setIsLoggedIn(false);
+                setMobileMenuOpen(false);
+              }}
+            >Log out
             </Button>
           </nav>
         </div>
@@ -184,7 +193,7 @@ export default function ResourcesPage() {
                   </div>
                   <div className="flex-shrink-0 ml-4">
                     <Image
-                      src={resource.qrCode}
+                      src="/placeholder.svg"
                       alt={`QR Code for ${resource.name}`}
                       width={64}
                       height={64}
