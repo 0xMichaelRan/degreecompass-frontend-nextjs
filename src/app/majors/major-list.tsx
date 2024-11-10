@@ -44,9 +44,9 @@ export default function MajorListPage() {
               <Link href="/resources" className="text-gray-300 hover:text-white">Resources</Link>
             </nav>
             <Link href="/majors">
-            <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
-              Get Started
-            </Button>
+              <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
+                Get Started
+              </Button>
             </Link>
           </div>
         </div>
@@ -56,7 +56,7 @@ export default function MajorListPage() {
         <h1 className="text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
           Explore Majors
         </h1>
-        
+
         <div className="mb-8">
           <div className="relative max-w-md mx-auto">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />

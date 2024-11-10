@@ -74,9 +74,9 @@ export default function AllMajorsPage() {
               <Link href="/resources" className="text-gray-300 hover:text-white">Resources</Link>
             </nav>
             <Link href="/majors">
-            <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
-              Get Started
-            </Button>
+              <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
+                Get Started
+              </Button>
             </Link>
           </div>
         </div>
@@ -86,7 +86,7 @@ export default function AllMajorsPage() {
         <h1 className="text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
           All Majors
         </h1>
-        
+
         <div className="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="relative w-full md:w-1/3">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -104,11 +104,10 @@ export default function AllMajorsPage() {
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 variant={selectedCategory === category ? "default" : "outline"}
-                className={`${
-                  selectedCategory === category
-                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
-                    : "text-gray-300 border-gray-600 hover:bg-gray-700"
-                }`}
+                className={`${selectedCategory === category
+                  ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+                  : "text-gray-300 border-gray-600 hover:bg-gray-700"
+                  }`}
               >
                 {category}
               </Button>

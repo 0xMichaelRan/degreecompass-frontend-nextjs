@@ -35,9 +35,9 @@ export default function MajorDetailPage() {
               <Link href="/resources" className="text-gray-300 hover:text-white">Resources</Link>
             </nav>
             <Link href="/majors">
-            <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
-              Get Started
-            </Button>
+              <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
+                Get Started
+              </Button>
             </Link>
           </div>
         </div>
@@ -47,14 +47,14 @@ export default function MajorDetailPage() {
         <Link href="/majors" className="text-purple-400 hover:text-purple-300 mb-4 inline-block">
           ← Back to Majors
         </Link>
-        
+
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
             <h1 className="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
               {majorDetails.name}
             </h1>
             <p className="text-xl text-gray-300 mb-8">{majorDetails.shortExplanation}</p>
-            
+
             <div className="flex space-x-4 mb-8">
               <Button className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white">
                 Apply
@@ -125,7 +125,7 @@ export default function MajorDetailPage() {
                 <div className="space-y-2">
                   {compareMajors.map((major) => (
                     <Link key={major.id} href={`/compare/`}>
-                    {/* <Link key={major.id} href={`/compare/${majorDetails.id}/${major.id}`}> */}
+                      {/* <Link key={major.id} href={`/compare/${majorDetails.id}/${major.id}`}> */}
                       <Button variant="outline" className="w-full text-left justify-start bg-gray-700 hover:bg-gray-600 border-gray-600">
                         {major.name}
                       </Button>

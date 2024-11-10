@@ -107,12 +107,12 @@ export default function ResourcesPage() {
                         Settings
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => {
-                    setIsLoggedIn(false);
-                    setMobileMenuOpen(false);
-                  }}>
+                      <DropdownMenuItem onClick={() => {
+                        setIsLoggedIn(false);
+                        setMobileMenuOpen(false);
+                      }}>
                         Log out
-                  </DropdownMenuItem>
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </nav>
@@ -142,8 +142,8 @@ export default function ResourcesPage() {
             <Link href="/resources" className="text-white font-semibold py-2">Resources</Link>
             <Link href="/profile" className="text-gray-300 hover:text-white py-2">Profile</Link>
             <Link href="/settings" className="text-gray-300 hover:text-white py-2">Settings</Link>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               className="justify-start px-0 hover:bg-transparent hover:text-white"
               onClick={() => {
                 setIsLoggedIn(false);
