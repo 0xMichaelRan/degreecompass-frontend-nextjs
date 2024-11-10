@@ -59,6 +59,7 @@ const resources = [
 export default function ResourcesPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const filteredResources = resources.filter(resource =>
     resource.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -74,47 +75,58 @@ export default function ResourcesPage() {
               <Compass className="h-8 w-8 text-purple-400" />
               <span className="text-2xl font-bold text-white">DegreeCompass</span>
             </Link>
-            <nav className="hidden md:flex items-center space-x-4">
-              <Link href="/majors" className="text-gray-300 hover:text-white">Majors</Link>
-              <Link href="/compare" className="text-gray-300 hover:text-white">Compare</Link>
-              <Link href="/resources" className="text-white font-semibold">Resources</Link>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src="/placeholder.svg" alt="@username" />
-                      <AvatarFallback>UN</AvatarFallback>
-                    </Avatar>
+            {isLoggedIn ? (
+              <>
+                <nav className="hidden md:flex items-center space-x-4">
+                  <Link href="/majors" className="text-gray-300 hover:text-white">Majors</Link>
+                  <Link href="/compare" className="text-gray-300 hover:text-white">Compare</Link>
+                  <Link href="/resources" className="text-white font-semibold">Resources</Link>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src="/placeholder.svg" alt="@username" />
+                          <AvatarFallback>UN</AvatarFallback>
+                        </Avatar>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56" align="end" forceMount>
+                      <DropdownMenuLabel className="font-normal">
+                        <div className="flex flex-col space-y-1">
+                          <p className="text-sm font-medium leading-none">username</p>
+                          <p className="text-xs leading-none text-muted-foreground">
+                            user@example.com
+                          </p>
+                        </div>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        Profile
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        Settings
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                        Log out
+                  </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </nav>
+                <div className="md:hidden">
+                  <Button variant="ghost" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                    {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">username</p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        user@example.com
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    Log out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </nav>
-            <div className="md:hidden">
-              <Button variant="ghost" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                </div>
+              </>
+            ) : (
+              <Button
+                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                onClick={() => setIsLoggedIn(!isLoggedIn)}
+              >
+                Get Started
               </Button>
-            </div>
+            )}
           </div>
         </div>
       </header>
@@ -138,7 +150,7 @@ export default function ResourcesPage() {
         <h1 className="text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
           University Resources
         </h1>
-        
+
         <div className="mb-8 max-w-md mx-auto">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -160,7 +172,7 @@ export default function ResourcesPage() {
                   <div>
                     <h2 className="text-xl font-bold mb-2 text-white">{resource.name}</h2>
                     <p className="text-gray-300 mb-4">{resource.description}</p>
-                    <Link 
+                    <Link
                       href={resource.url}
                       target="_blank"
                       rel="noopener noreferrer"
