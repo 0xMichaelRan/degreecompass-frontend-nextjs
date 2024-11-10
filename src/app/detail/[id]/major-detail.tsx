@@ -28,7 +28,7 @@ export default function MajorDetailPage() {
       <header className="bg-black py-6">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href="/majors" className="flex items-center space-x-2">
               <Compass className="h-6 w-6 text-purple-400" />
               <span className="text-2xl font-bold text-white">DegreeCompass</span>
             </Link>
@@ -122,9 +122,11 @@ export default function MajorDetailPage() {
                     ))}
                   </SelectContent>
                 </Select>
-                <Button className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white">
-                  Compare Majors
-                </Button>
+                <Link href="/compare">
+                  <Button className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white">
+                    Compare Majors
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </div>
