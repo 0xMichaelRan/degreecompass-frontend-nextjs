@@ -57,13 +57,13 @@ export default function MajorDetailPage() {
             
             <div className="flex space-x-4 mb-8">
               <Button className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white">
-                Apply Now
+                Apply
               </Button>
               <Button variant="outline" className="text-purple-400 border-purple-400 hover:bg-purple-400 hover:text-white">
-                Download Brochure
+                Download
               </Button>
               <Button variant="outline" className="text-pink-400 border-pink-400 hover:bg-pink-400 hover:text-white">
-                Schedule a Call
+                Call
               </Button>
             </div>
 
