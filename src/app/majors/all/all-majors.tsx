@@ -118,7 +118,7 @@ export default function AllMajorsPage() {
           <CardContent className="p-6">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredMajors.map((major) => (
-                <Link key={major.id} href={`/majors/${major.id}`} className="text-purple-400 hover:text-purple-300 transition-colors">
+                <Link key={major.id} href={`/detail/${major.id}`} className="text-purple-400 hover:text-purple-300 transition-colors">
                   {major.name}
                 </Link>
               ))}
