@@ -63,26 +63,6 @@ export default function MajorWallPage() {
   }, [loading, visibleMajors, filteredMajors])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 text-white">
-      <header className="bg-black bg-opacity-50 backdrop-blur-md py-6 sticky top-0 z-10">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
-              <Compass className="h-8 w-8 text-purple-400" />
-              <span className="text-2xl font-bold text-white">DegreeCompass</span>
-            </Link>
-            <nav className="hidden md:flex space-x-4">
-              <Link href="/majors" className="text-gray-300 hover:text-white transition-colors">Majors</Link>
-              <Link href="/compare" className="text-gray-300 hover:text-white transition-colors">Compare</Link>
-              <Link href="/resources" className="text-gray-300 hover:text-white transition-colors">Resources</Link>
-            </nav>
-            <Button className="bg-gradient-to-r from-pink-500 to-yellow-500 hover:from-pink-600 hover:to-yellow-600 text-white font-bold">
-              Get Started
-            </Button>
-          </div>
-        </div>
-      </header>
-
       <main className="container mx-auto px-4 py-12">
         <motion.h1 
           className="text-5xl font-bold mb-8 text-center"
@@ -180,12 +160,5 @@ export default function MajorWallPage() {
           </motion.p>
         )}
       </main>
-
-      <footer className="bg-black bg-opacity-50 backdrop-blur-md py-6 mt-12">
-        <div className="container mx-auto px-4 text-center text-gray-400">
-          <p>&copy; 2024 DegreeCompass. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
   )
 }
