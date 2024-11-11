@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Navigation } from "@/components/navigation"
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,12 +25,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Navigation />
+        <div className="min-h-screen bg-gray-900 text-white">
+
+          {children}
+
+          <footer className="bg-black py-6 mt-12">
+            <div className="container mx-auto px-4 text-center text-gray-400">
+              <p>&copy; 2024 DegreeCompass. All rights reserved.</p>
+            </div>
+          </footer>
+        </div>
       </body>
     </html>
   );
