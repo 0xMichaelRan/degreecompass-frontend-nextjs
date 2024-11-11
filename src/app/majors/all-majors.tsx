@@ -74,111 +74,6 @@ const defaultMajors = {
     },
     {
       "category_name": "工学",
-      "major_id": "081203T",
-      "major_name": "导航工程",
-      "subject_id": "0812",
-      "subject_name": "测绘"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081204T",
-      "major_name": "地理国情监测",
-      "subject_id": "0812",
-      "subject_name": "测绘"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081301",
-      "major_name": "化学工程与工艺",
-      "subject_id": "0813",
-      "subject_name": "化工与制药"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081302",
-      "major_name": "制药工程",
-      "subject_id": "0813",
-      "subject_name": "化工与制药"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081303T",
-      "major_name": "资源循环科学与工程",
-      "subject_id": "0813",
-      "subject_name": "化工与制药"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081304T",
-      "major_name": "能源化学工程",
-      "subject_id": "0813",
-      "subject_name": "化工与制药"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081305T",
-      "major_name": "化学工程与工业生物工程",
-      "subject_id": "0813",
-      "subject_name": "化工与制药"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081401",
-      "major_name": "地质工程",
-      "subject_id": "0814",
-      "subject_name": "地质"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081402",
-      "major_name": "勘查技术与工程",
-      "subject_id": "0814",
-      "subject_name": "地质"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081403",
-      "major_name": "资源勘查工程",
-      "subject_id": "0814",
-      "subject_name": "地质"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081404T",
-      "major_name": "地下水科学与工程",
-      "subject_id": "0814",
-      "subject_name": "地质"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081501",
-      "major_name": "采矿工程",
-      "subject_id": "0815",
-      "subject_name": "矿业"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081502",
-      "major_name": "石油工程",
-      "subject_id": "0815",
-      "subject_name": "矿业"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081503",
-      "major_name": "矿物加工工程",
-      "subject_id": "0815",
-      "subject_name": "矿业"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081504",
-      "major_name": "油气储运工程",
-      "subject_id": "0815",
-      "subject_name": "矿业"
-    },
-    {
-      "category_name": "工学",
       "major_id": "081505T",
       "major_name": "矿物资源工程",
       "subject_id": "0815",
@@ -213,7 +108,19 @@ export default function AllMajorsPage() {
     try {
       const nextPage = currentPage + 1;
       const result = await getMajors(nextPage);
-      setVisibleMajors(prev => [...prev, ...result.data]);
+      
+      if (nextPage > 2 && visibleMajors.length < (nextPage - 1) * result.pagination.page_size) {
+        const missingPages = [];
+        for (let i = 1; i < nextPage; i++) {
+          missingPages.push(getMajors(i));
+        }
+        const results = await Promise.all(missingPages);
+        const allPreviousMajors = results.flatMap(result => result.data);
+        setVisibleMajors([...allPreviousMajors, ...result.data]);
+      } else {
+        setVisibleMajors(prev => [...prev, ...result.data]);
+      }
+      
       setCurrentPage(nextPage);
       setHasMore(nextPage < result.pagination.total_pages);
     } catch (error) {
