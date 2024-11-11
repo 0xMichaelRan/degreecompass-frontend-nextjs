@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Compass, Search } from "lucide-react"
 import axios from 'axios';
+import { motion } from "framer-motion"
+
 
 interface Major {
   category_name: string;
@@ -282,37 +284,57 @@ export default function AllMajorsPage() {
       </header>
 
       <main className="container mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-          All Majors
-        </h1>
+        <motion.h1 
+          className="text-5xl font-bold mb-8 text-center"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-yellow-400">
+            Major Wall
+          </span>
+        </motion.h1>
+        
+        <motion.div 
+          className="mb-8 flex flex-wrap justify-center gap-2"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          {categories.map((category) => (
+            <Button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              variant={selectedCategory === category ? "default" : "outline"}
+              className={`${
+                selectedCategory === category
+                  ? "bg-gradient-to-r from-pink-500 to-yellow-500 text-white"
+                  : "text-gray-300 border-gray-600 hover:bg-white hover:bg-opacity-10"
+              } transition-all duration-300 ease-in-out transform hover:scale-105`}
+            >
+              {category}
+            </Button>
+          ))}
+        </motion.div>
 
-        <div className="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="relative w-full md:w-1/3">
+        <motion.div 
+          className="mb-8 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <Input
               type="search"
               placeholder="Search majors..."
-              className="pl-10 bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-purple-500 focus:border-purple-500 w-full"
+              className="pl-10 bg-white bg-opacity-10 border-gray-600 text-white placeholder-gray-400 focus:ring-pink-500 focus:border-pink-500 w-full backdrop-blur-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                variant={selectedCategory === category ? "default" : "outline"}
-                className={`${selectedCategory === category
-                  ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
-                  : "text-gray-300 border-gray-600 hover:bg-gray-700"
-                  }`}
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
-        </div>
+        </motion.div>
+
 
         <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-4">
