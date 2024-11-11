@@ -21,26 +21,42 @@ interface Major {
   subject_name: string;
 }
 
+interface RelatedMajors {
+  data: Major[];
+  pagination: {
+    page: number;
+    page_size: number;
+    total_count: number;
+    total_pages: number;
+  };
+}
+
 export default function MajorDetailPage() {
   const params = useParams()
   const [majorDetails, setMajorDetails] = useState<Major | null>(null)
+  const [relatedMajors, setRelatedMajors] = useState<Major[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchMajorDetails = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/majors/${params.id}`)
-        if (!response.ok) throw new Error('Failed to fetch major details')
-        const data = await response.json()
-        setMajorDetails(data)
+        const detailsResponse = await fetch(`http://localhost:5000/api/majors/${params.id}`)
+        if (!detailsResponse.ok) throw new Error('Failed to fetch major details')
+        const detailsData = await detailsResponse.json()
+        setMajorDetails(detailsData)
+
+        const relatedResponse = await fetch(`http://localhost:5000/api/majors?subject=${detailsData.subject_id}&page=1&page_size=12`)
+        if (!relatedResponse.ok) throw new Error('Failed to fetch related majors')
+        const relatedData: RelatedMajors = await relatedResponse.json()
+        setRelatedMajors(relatedData.data.filter(major => major.major_id !== detailsData.major_id))
       } catch (error) {
-        console.error('Error fetching major details:', error)
+        console.error('Error fetching data:', error)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchMajorDetails()
+    fetchData()
   }, [params.id])
 
   if (loading) return <div>Loading...</div>
@@ -104,41 +120,20 @@ export default function MajorDetailPage() {
                   </Tooltip>
                 </TooltipProvider>
               </h2>
-              <div className="flex flex-wrap gap-2">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
-                        相同学科门类
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-gray-800 text-white p-2">
-                      <p>具有相同的学科门类的专业</p>
-                    </TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
-                        相同学科
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-gray-800 text-white p-2">
-                      <p>具有相同的学科代码的专业</p>
-                    </TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
-                        相近专业
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-gray-800 text-white p-2">
-                      <p>专业代码相近的专业</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                {relatedMajors.map((major) => (
+                  <Link 
+                    key={major.major_id} 
+                    href={`/detail/${major.major_id}`}
+                  >
+                    <Button 
+                      variant="outline" 
+                      className="w-full bg-gray-700 text-gray-200 border-purple-400 hover:bg-gray-600"
+                    >
+                      {major.major_name}
+                    </Button>
+                  </Link>
+                ))}
               </div>
             </div>
 
