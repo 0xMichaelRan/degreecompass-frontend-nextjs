@@ -1,25 +1,45 @@
+'use client'
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Compass, BookOpen, ArrowRight, School, Users } from "lucide-react"
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
 
-// This would typically come from a database or API
-const majorDetails = {
-  id: 1,
-  name: "Computer Science",
-  shortExplanation: "Computer Science is the study of computation, information, and automation. It involves the theory, design, development, and application of software and software systems.",
-  commonCourses: ["Introduction to Programming", "Data Structures and Algorithms", "Database Systems", "Computer Networks", "Artificial Intelligence", "Software Engineering"],
-  relatedMajors: ["Software Engineering", "Information Technology", "Data Science", "Cybersecurity"],
-  highSchoolSubjects: ["Mathematics", "Physics", "Computer Studies", "Logic"]
+interface Major {
+  category_name: string;
+  major_id: string;
+  major_name: string;
+  subject_id: string;
+  subject_name: string;
 }
 
-const compareMajors = [
-  { id: 2, name: "Business Administration" },
-  { id: 3, name: "Electrical Engineering" },
-  { id: 4, name: "Data Science" },
-]
-
 export default function MajorDetailPage() {
+  const params = useParams()
+  const [majorDetails, setMajorDetails] = useState<Major | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchMajorDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/majors/${params.id}`)
+        if (!response.ok) throw new Error('Failed to fetch major details')
+        const data = await response.json()
+        setMajorDetails(data)
+      } catch (error) {
+        console.error('Error fetching major details:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchMajorDetails()
+  }, [params.id])
+
+  if (loading) return <div>Loading...</div>
+  if (!majorDetails) return <div>Major not found</div>
+
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <header className="bg-black py-6">
@@ -51,9 +71,13 @@ export default function MajorDetailPage() {
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
             <h1 className="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
-              {majorDetails.name}
+              {majorDetails.major_name}
             </h1>
-            <p className="text-xl text-gray-300 mb-8">{majorDetails.shortExplanation}</p>
+            <div className="text-xl text-gray-300 mb-8">
+              <p>学科门类: {majorDetails.category_name}</p>
+              <p>学科代码: {majorDetails.subject_id}</p>
+              <p>学科名称: {majorDetails.subject_name}</p>
+            </div>
 
             <div className="flex space-x-4 mb-8">
               <Button className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white">
@@ -76,12 +100,7 @@ export default function MajorDetailPage() {
               </CardHeader>
               <CardContent>
                 <ul className="grid grid-cols-2 gap-2">
-                  {majorDetails.commonCourses.map((course, index) => (
-                    <li key={index} className="flex items-center text-gray-300">
-                      <ArrowRight className="h-4 w-4 mr-2 text-purple-400" />
-                      {course}
-                    </li>
-                  ))}
+                  {/* Add common courses logic here */}
                 </ul>
               </CardContent>
             </Card>
@@ -92,25 +111,17 @@ export default function MajorDetailPage() {
                 Related Majors
               </h2>
               <div className="flex flex-wrap gap-2">
-                {majorDetails.relatedMajors.map((major, index) => (
-                  <span key={index} className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm">
-                    {major}
-                  </span>
-                ))}
+                {/* Add related majors logic here */}
               </div>
             </div>
 
             <div>
               <h2 className="text-2xl font-semibold mb-4 flex items-center">
                 <School className="h-5 w-5 mr-2 text-purple-400" />
-                Most Related High School Subjects
+                High School Subjects
               </h2>
               <div className="flex flex-wrap gap-2">
-                {majorDetails.highSchoolSubjects.map((subject, index) => (
-                  <span key={index} className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
-                    {subject}
-                  </span>
-                ))}
+                {/* Add high school subjects logic here */}
               </div>
             </div>
           </div>
@@ -118,19 +129,13 @@ export default function MajorDetailPage() {
           <div>
             <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-white">Compare Majors</CardTitle>
+                <CardTitle className="text-white">专业信息</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-300 mb-4">Compare {majorDetails.name} with:</p>
                 <div className="space-y-2">
-                  {compareMajors.map((major) => (
-                    <Link key={major.id} href={`/compare/`}>
-                      {/* <Link key={major.id} href={`/compare/${majorDetails.id}/${major.id}`}> */}
-                      <Button variant="outline" className="w-full text-left justify-start bg-gray-700 hover:bg-gray-600 border-gray-600">
-                        {major.name}
-                      </Button>
-                    </Link>
-                  ))}
+                  <p className="text-gray-300">专业代码: {majorDetails.major_id}</p>
+                  <p className="text-gray-300">所属门类: {majorDetails.category_name}</p>
+                  <p className="text-gray-300">所属学科: {majorDetails.subject_name}</p>
                 </div>
               </CardContent>
             </Card>
