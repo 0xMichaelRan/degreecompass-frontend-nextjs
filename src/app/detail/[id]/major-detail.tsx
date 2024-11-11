@@ -6,6 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Compass, BookOpen, ArrowRight, School, Users } from "lucide-react"
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface Major {
   category_name: string;
@@ -111,7 +117,40 @@ export default function MajorDetailPage() {
                 Related Majors
               </h2>
               <div className="flex flex-wrap gap-2">
-                {/* Add related majors logic here */}
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm">
+                        相同学科门类
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-gray-800 text-white p-2">
+                      <p>具有相同的学科门类的专业</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm">
+                        相同学科
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-gray-800 text-white p-2">
+                      <p>具有相同的学科代码的专业</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm">
+                        相近专业
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-gray-800 text-white p-2">
+                      <p>专业代码相近的专业</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             </div>
 
