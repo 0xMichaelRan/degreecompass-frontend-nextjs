@@ -42,152 +42,152 @@ const categories = ['All', 'STEM', 'Business', 'Social Sciences', 'Humanities', 
 
 const defaultMajors = {
   "data": [
-      {
-          "category_name": "工学",
-          "major_id": "081103",
-          "major_name": "港口航道与海岸工程",
-          "subject_id": "0811",
-          "subject_name": "水利"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081104T",
-          "major_name": "水务工程",
-          "subject_id": "0811",
-          "subject_name": "水利"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081201",
-          "major_name": "测绘工程",
-          "subject_id": "0812",
-          "subject_name": "测绘"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081202",
-          "major_name": "遥感科学与技术",
-          "subject_id": "0812",
-          "subject_name": "测绘"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081203T",
-          "major_name": "导航工程",
-          "subject_id": "0812",
-          "subject_name": "测绘"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081204T",
-          "major_name": "地理国情监测",
-          "subject_id": "0812",
-          "subject_name": "测绘"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081301",
-          "major_name": "化学工程与工艺",
-          "subject_id": "0813",
-          "subject_name": "化工与制药"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081302",
-          "major_name": "制药工程",
-          "subject_id": "0813",
-          "subject_name": "化工与制药"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081303T",
-          "major_name": "资源循环科学与工程",
-          "subject_id": "0813",
-          "subject_name": "化工与制药"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081304T",
-          "major_name": "能源化学工程",
-          "subject_id": "0813",
-          "subject_name": "化工与制药"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081305T",
-          "major_name": "化学工程与工业生物工程",
-          "subject_id": "0813",
-          "subject_name": "化工与制药"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081401",
-          "major_name": "地质工程",
-          "subject_id": "0814",
-          "subject_name": "地质"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081402",
-          "major_name": "勘查技术与工程",
-          "subject_id": "0814",
-          "subject_name": "地质"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081403",
-          "major_name": "资源勘查工程",
-          "subject_id": "0814",
-          "subject_name": "地质"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081404T",
-          "major_name": "地下水科学与工程",
-          "subject_id": "0814",
-          "subject_name": "地质"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081501",
-          "major_name": "采矿工程",
-          "subject_id": "0815",
-          "subject_name": "矿业"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081502",
-          "major_name": "石油工程",
-          "subject_id": "0815",
-          "subject_name": "矿业"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081503",
-          "major_name": "矿物加工工程",
-          "subject_id": "0815",
-          "subject_name": "矿业"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081504",
-          "major_name": "油气储运工程",
-          "subject_id": "0815",
-          "subject_name": "矿业"
-      },
-      {
-          "category_name": "工学",
-          "major_id": "081505T",
-          "major_name": "矿物资源工程",
-          "subject_id": "0815",
-          "subject_name": "矿业"
-      }
+    {
+      "category_name": "工学",
+      "major_id": "081103",
+      "major_name": "港口航道与海岸工程",
+      "subject_id": "0811",
+      "subject_name": "水利"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081104T",
+      "major_name": "水务工程",
+      "subject_id": "0811",
+      "subject_name": "水利"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081201",
+      "major_name": "测绘工程",
+      "subject_id": "0812",
+      "subject_name": "测绘"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081202",
+      "major_name": "遥感科学与技术",
+      "subject_id": "0812",
+      "subject_name": "测绘"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081203T",
+      "major_name": "导航工程",
+      "subject_id": "0812",
+      "subject_name": "测绘"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081204T",
+      "major_name": "地理国情监测",
+      "subject_id": "0812",
+      "subject_name": "测绘"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081301",
+      "major_name": "化学工程与工艺",
+      "subject_id": "0813",
+      "subject_name": "化工与制药"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081302",
+      "major_name": "制药工程",
+      "subject_id": "0813",
+      "subject_name": "化工与制药"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081303T",
+      "major_name": "资源循环科学与工程",
+      "subject_id": "0813",
+      "subject_name": "化工与制药"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081304T",
+      "major_name": "能源化学工程",
+      "subject_id": "0813",
+      "subject_name": "化工与制药"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081305T",
+      "major_name": "化学工程与工业生物工程",
+      "subject_id": "0813",
+      "subject_name": "化工与制药"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081401",
+      "major_name": "地质工程",
+      "subject_id": "0814",
+      "subject_name": "地质"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081402",
+      "major_name": "勘查技术与工程",
+      "subject_id": "0814",
+      "subject_name": "地质"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081403",
+      "major_name": "资源勘查工程",
+      "subject_id": "0814",
+      "subject_name": "地质"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081404T",
+      "major_name": "地下水科学与工程",
+      "subject_id": "0814",
+      "subject_name": "地质"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081501",
+      "major_name": "采矿工程",
+      "subject_id": "0815",
+      "subject_name": "矿业"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081502",
+      "major_name": "石油工程",
+      "subject_id": "0815",
+      "subject_name": "矿业"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081503",
+      "major_name": "矿物加工工程",
+      "subject_id": "0815",
+      "subject_name": "矿业"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081504",
+      "major_name": "油气储运工程",
+      "subject_id": "0815",
+      "subject_name": "矿业"
+    },
+    {
+      "category_name": "工学",
+      "major_id": "081505T",
+      "major_name": "矿物资源工程",
+      "subject_id": "0815",
+      "subject_name": "矿业"
+    }
   ],
   "pagination": {
-      "page": 14,
-      "page_size": 20,
-      "total_count": 512,
-      "total_pages": 26
+    "page": 14,
+    "page_size": 20,
+    "total_count": 512,
+    "total_pages": 26
   }
 };
 
@@ -263,7 +263,7 @@ export default function AllMajorsPage() {
       <header className="bg-black py-6">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            <Link href="/majors" className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <Compass className="h-6 w-6 text-purple-400" />
               <span className="text-2xl font-bold text-white">DegreeCompass</span>
             </Link>
@@ -315,10 +315,14 @@ export default function AllMajorsPage() {
         </div>
 
         <Card className="bg-gray-800 border-gray-700">
-          <CardContent className="p-6">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <CardContent className="p-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredMajors.map((major) => (
-                <Link key={major.major_id} href={`/detail/${major.major_id}`} className="text-purple-400 hover:text-purple-300 transition-colors">
+                <Link 
+                  key={major.major_id} 
+                  href={`/detail/${major.major_id}`} 
+                  className="text-purple-400 hover:text-purple-300 transition-colors text-sm p-2"
+                >
                   {major.major_name}
                 </Link>
               ))}

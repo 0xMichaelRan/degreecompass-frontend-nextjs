@@ -25,7 +25,7 @@ export default function MajorDetailPage() {
       <header className="bg-black py-6">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            <Link href="/majors" className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <Compass className="h-6 w-6 text-purple-400" />
               <span className="text-2xl font-bold text-white">DegreeCompass</span>
             </Link>
