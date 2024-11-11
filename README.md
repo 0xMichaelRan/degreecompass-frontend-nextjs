@@ -10,4 +10,5 @@ Add shadcn/ui to the project:
 ```bash
 pnpm dlx shadcn@latest init
 pnpm dlx shadcn@latest add button input card select table label checkbox
+pnpm dlx shadcn@latest add tooltip
 ```

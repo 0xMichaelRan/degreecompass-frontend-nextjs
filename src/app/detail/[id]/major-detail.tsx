@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Compass, BookOpen, ArrowRight, School, Users } from "lucide-react"
+import { Compass, BookOpen, ArrowRight, School, Users, Info } from "lucide-react"
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import {
@@ -115,12 +115,22 @@ export default function MajorDetailPage() {
               <h2 className="text-2xl font-semibold mb-4 flex items-center">
                 <Users className="h-5 w-5 mr-2 text-purple-400" />
                 Related Majors
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-4 w-4 ml-2 text-gray-400 hover:text-gray-300" />
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-gray-800 text-white p-2">
+                      <p>相关专业根据学科门类、学科代码和专业代码的相似度来推荐</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </h2>
               <div className="flex flex-wrap gap-2">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm">
+                      <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
                         相同学科门类
                       </span>
                     </TooltipTrigger>
@@ -131,7 +141,7 @@ export default function MajorDetailPage() {
 
                   <Tooltip>
                     <TooltipTrigger>
-                      <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm">
+                      <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
                         相同学科
                       </span>
                     </TooltipTrigger>
@@ -142,7 +152,7 @@ export default function MajorDetailPage() {
 
                   <Tooltip>
                     <TooltipTrigger>
-                      <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm">
+                      <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
                         相近专业
                       </span>
                     </TooltipTrigger>
