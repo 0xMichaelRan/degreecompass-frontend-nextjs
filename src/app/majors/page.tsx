@@ -1,5 +1,5 @@
-import MajorListPage from "@/app/majors/major-list"
+import AllMajorsPage from "@/app/majors/all-majors"
 
 export default function MajorsPage() {
-  return <MajorListPage />
+  return <AllMajorsPage />
 }

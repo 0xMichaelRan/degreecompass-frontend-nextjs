@@ -22,7 +22,7 @@ const majors = [
   { id: 12, name: "Marketing", category: "Business" },
 ]
 
-export default function MajorListPage() {
+export default function MajorListHomePage() {
   const [searchTerm, setSearchTerm] = useState("")
 
   const filteredMajors = majors.filter(major =>
@@ -74,7 +74,7 @@ export default function MajorListPage() {
           <CardContent className="p-6">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredMajors.map((major) => (
-                <Link key={major.id} href={`/majors/all?cat=${major.id}`} className="text-purple-400 hover:text-purple-300 transition-colors">
+                <Link key={major.id} href={`/majors?cat=${major.id}`} className="text-purple-400 hover:text-purple-300 transition-colors">
                   {major.name}
                 </Link>
               ))}
@@ -83,7 +83,7 @@ export default function MajorListPage() {
         </Card>
 
         <div className="mt-12 text-center">
-          <Link href="/majors/all">
+          <Link href="/majors">
             <Button className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white text-lg px-8 py-3 rounded-full">
               View All Majors
             </Button>
