@@ -163,14 +163,28 @@ export default function MajorDetailPage() {
                 </TooltipProvider>
               </div>
             </div>
-
+     
             <div>
               <h2 className="text-2xl font-semibold mb-4 flex items-center">
                 <School className="h-5 w-5 mr-2 text-purple-400" />
                 High School Subjects
               </h2>
               <div className="flex flex-wrap gap-2">
-                {/* Add high school subjects logic here */}
+                <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
+                  数学
+                </span>
+                <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
+                  物理
+                </span>
+                <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
+                  化学
+                </span>
+                <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
+                  生物
+                </span>
+                <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
+                  地理
+                </span>
               </div>
             </div>
           </div>
