@@ -22,21 +22,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navigation />
-        <div className="min-h-screen bg-gray-900 text-white">
-
-          {children}
-
-          <footer className="bg-black py-6 mt-12">
+      <body>
+        <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+          <Navigation />
+          <main className="flex-grow">{children}</main>
+          <footer className="bg-black py-6">
             <div className="container mx-auto px-4 text-center text-gray-400">
               <p>&copy; 2024 DegreeCompass. All rights reserved.</p>
             </div>
@@ -44,5 +39,5 @@ export default function RootLayout({
         </div>
       </body>
     </html>
-  );
+  )
 }
