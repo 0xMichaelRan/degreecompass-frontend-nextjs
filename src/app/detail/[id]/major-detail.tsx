@@ -47,7 +47,7 @@ export default function MajorDetailPage() {
   if (!majorDetails) return <div>Major not found</div>
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
+    <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col">
       <header className="bg-black py-6">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
@@ -69,7 +69,7 @@ export default function MajorDetailPage() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-12 flex-grow">
         <Link href="/majors" className="text-purple-400 hover:text-purple-300 mb-4 inline-block">
           ← Back to Majors
         </Link>
@@ -121,7 +121,7 @@ export default function MajorDetailPage() {
                       <Info className="h-4 w-4 ml-2 text-gray-400 hover:text-gray-300" />
                     </TooltipTrigger>
                     <TooltipContent className="bg-gray-800 text-white p-2">
-                      <p>相关专业根据学科门类、学科代码和专业代码的相似度来推荐</p>
+                      <p>相关专业学科</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -163,11 +163,21 @@ export default function MajorDetailPage() {
                 </TooltipProvider>
               </div>
             </div>
-     
+
             <div>
               <h2 className="text-2xl font-semibold mb-4 flex items-center">
                 <School className="h-5 w-5 mr-2 text-purple-400" />
                 High School Subjects
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-4 w-4 ml-2 text-gray-400 hover:text-gray-300" />
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-gray-800 text-white p-2">
+                      <p>高中阶段学习过的课程</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </h2>
               <div className="flex flex-wrap gap-2">
                 <span className="bg-gray-700 text-gray-200 px-3 py-1 rounded-lg text-sm border border-purple-400">
@@ -206,7 +216,7 @@ export default function MajorDetailPage() {
         </div>
       </main>
 
-      <footer className="bg-black py-6 mt-12">
+      <footer className="bg-black py-6">
         <div className="container mx-auto px-4 text-center text-gray-400">
           <p>&copy; 2024 DegreeCompass. All rights reserved.</p>
         </div>
