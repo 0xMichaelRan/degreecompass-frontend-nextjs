@@ -40,12 +40,14 @@ export default function MajorDetailPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const detailsResponse = await fetch(`http://localhost:5000/api/majors/${params.id}`)
+        const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`;
+
+        const detailsResponse = await fetch(`${apiUrl}/api/majors/${params.id}`)
         if (!detailsResponse.ok) throw new Error('Failed to fetch major details')
         const detailsData = await detailsResponse.json()
         setMajorDetails(detailsData)
 
-        const relatedResponse = await fetch(`http://localhost:5000/api/majors?subject=${detailsData.subject_id}&page=1&page_size=12`)
+        const relatedResponse = await fetch(`${apiUrl}/api/majors?subject=${detailsData.subject_id}&page=1&page_size=12`)
         if (!relatedResponse.ok) throw new Error('Failed to fetch related majors')
         const relatedData: RelatedMajors = await relatedResponse.json()
         setRelatedMajors(relatedData.data.filter(major => major.major_id !== detailsData.major_id))
