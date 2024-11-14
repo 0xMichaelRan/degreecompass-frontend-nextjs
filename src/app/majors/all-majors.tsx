@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Compass, Search } from "lucide-react"
 import axios from 'axios';
 import { motion } from "framer-motion"
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 
 interface Major {
@@ -49,6 +49,7 @@ const getMajors = async (page: number = 1, pageSize: number = PAGE_SIZE, categor
 
 export default function AllMajorsPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("")
@@ -88,10 +89,18 @@ export default function AllMajorsPage() {
     }
   };
 
+  const handleAllClick = () => {
+    setSelectedCategory("");
+    setSelectedCategoryId("");
+    fetchMajorsByCategory("");
+    router.push('/majors');
+  };
+
   const handleCategoryClick = (category: Category) => {
     setSelectedCategory(category.category_name);
     setSelectedCategoryId(category.category_id);
     fetchMajorsByCategory(category.category_id);
+    router.push(`/majors?categoryId=${category.category_id}`);
   };
 
   useEffect(() => {
@@ -169,11 +178,7 @@ export default function AllMajorsPage() {
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <Button
-          onClick={() => {
-            setSelectedCategory("");
-            setSelectedCategoryId("");
-            fetchMajorsByCategory("");
-          }}
+          onClick={handleAllClick}
           variant={selectedCategory === "" ? "default" : "outline"}
           className={`${selectedCategory === ""
             ? "bg-gradient-to-r from-pink-500 to-yellow-500 text-white"
