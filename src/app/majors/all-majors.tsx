@@ -114,8 +114,8 @@ export default function AllMajorsPage() {
     major.major_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleScroll = async () => {
-    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight && !loading && hasMore) {
+  const loadMoreMajors = async () => {
+    if (!loading && hasMore) {
       setLoading(true);
       try {
         const nextPage = currentPage + 1;
@@ -128,6 +128,12 @@ export default function AllMajorsPage() {
       } finally {
         setLoading(false);
       }
+    }
+  };
+
+  const handleScroll = async () => {
+    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+      loadMoreMajors();
     }
   };
 
@@ -206,6 +212,17 @@ export default function AllMajorsPage() {
           </div>
         </CardContent>
       </Card>
+
+      {hasMore && (
+        <div className="text-center mt-4">
+          <a
+            onClick={loadMoreMajors}
+            className="text-purple-400 hover:text-purple-300 cursor-pointer"
+          >
+            Load More
+          </a>
+        </div>
+      )}
 
       {loading && <p className="text-center mt-4">Loading majors...</p>}
     </main>
