@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -30,14 +30,16 @@ interface MajorsResponse {
   pagination: Pagination;
 }
 
-const getMajors = async (page: number = 1, pageSize: number = 20): Promise<MajorsResponse> => {
+interface Category {
+  category_id: string;
+  category_name: string;
+}
 
-  console.log('API URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
-  console.log('API PORT:', process.env.NEXT_PUBLIC_BACKEND_PORT);
-
+const getMajors = async (page: number = 1, pageSize: number = 20, categoryId?: string): Promise<MajorsResponse> => {
   const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`;
+  const categoryParam = categoryId ? `&category=${categoryId}` : '';
   const response = await fetch(
-    `${apiUrl}/api/majors?page=${page}&page_size=${pageSize}`
+    `${apiUrl}/api/majors?page=${page}&page_size=${pageSize}${categoryParam}`
   );
   if (!response.ok) {
     throw new Error('Failed to fetch majors');
@@ -45,103 +47,59 @@ const getMajors = async (page: number = 1, pageSize: number = 20): Promise<Major
   return response.json();
 };
 
-const categories = ['All', 'STEM', 'Business', 'Social Sciences', 'Humanities', 'Health Sciences', 'Arts']
-
-const defaultMajors = {
-  "data": [
-    {
-      "category_name": "工学",
-      "major_id": "081103",
-      "major_name": "港口航道与海岸工程",
-      "subject_id": "0811",
-      "subject_name": "水利"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081104T",
-      "major_name": "水务工程",
-      "subject_id": "0811",
-      "subject_name": "水利"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081201",
-      "major_name": "测绘工程",
-      "subject_id": "0812",
-      "subject_name": "测绘"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081202",
-      "major_name": "遥感科学与技术",
-      "subject_id": "0812",
-      "subject_name": "测绘"
-    },
-    {
-      "category_name": "工学",
-      "major_id": "081505T",
-      "major_name": "矿物资源工程",
-      "subject_id": "0815",
-      "subject_name": "矿业"
-    }
-  ],
-  "pagination": {
-    "page": 14,
-    "page_size": 20,
-    "total_count": 512,
-    "total_pages": 26
-  }
-};
-
 export default function AllMajorsPage() {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("All")
-  const [visibleMajors, setVisibleMajors] = useState<Major[]>(defaultMajors.data)
+  const [selectedCategory, setSelectedCategory] = useState("")
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("")
+  const [visibleMajors, setVisibleMajors] = useState<Major[]>([])
   const [loading, setLoading] = useState(false)
-  const loader = useRef(null)
-  const [currentPage, setCurrentPage] = useState<number>(defaultMajors.pagination.page)
-  const [hasMore, setHasMore] = useState<boolean>(true)
-  const [totalPages, setTotalPages] = useState<number>(defaultMajors.pagination.total_pages)
+  const [totalPages, setTotalPages] = useState<number>(0)
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
 
-  const loadMoreMajors = async () => {
-    if (currentPage >= totalPages) {
-      setHasMore(false);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const nextPage = currentPage + 1;
-      const result = await getMajors(nextPage);
-
-      if (nextPage > 2 && visibleMajors.length < (nextPage - 1) * result.pagination.page_size) {
-        const missingPages = [];
-        for (let i = 1; i < nextPage; i++) {
-          missingPages.push(getMajors(i));
-        }
-        const results = await Promise.all(missingPages);
-        const allPreviousMajors = results.flatMap(result => result.data);
-        setVisibleMajors([...allPreviousMajors, ...result.data]);
-      } else {
-        setVisibleMajors(prev => [...prev, ...result.data]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/categories`);
+        if (!response.ok) throw new Error('Failed to fetch categories');
+        const data = await response.json();
+        setCategories(data.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
       }
+    };
 
-      setCurrentPage(nextPage);
-      setHasMore(nextPage < result.pagination.total_pages);
+    fetchCategories();
+  }, []);
+
+  const fetchMajorsByCategory = async (categoryId: string) => {
+    setLoading(true);
+    setCurrentPage(1);
+    try {
+      const data = await getMajors(1, 20, categoryId);
+      setVisibleMajors(data.data);
+      setHasMore(data.pagination.total_pages > 1);
     } catch (error) {
-      console.error('Error loading more majors:', error);
+      console.error('Error fetching majors by category:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCategoryClick = (category: Category) => {
+    setSelectedCategory(category.category_name);
+    setSelectedCategoryId(category.category_id);
+    fetchMajorsByCategory(category.category_id);
   };
 
   useEffect(() => {
     const fetchInitialMajors = async () => {
       try {
         const result = await getMajors(1);
-        setVisibleMajors(result.data);
+        const uniqueMajors = Array.from(new Map(result.data.map(major => [major.major_id, major])).values()) as Major[];
+        setVisibleMajors(uniqueMajors);
         setTotalPages(result.pagination.total_pages);
-        setCurrentPage(1);
       } catch (error) {
         console.error('Error fetching initial majors:', error);
       }
@@ -150,27 +108,33 @@ export default function AllMajorsPage() {
     fetchInitialMajors();
   }, []);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && !loading && hasMore) {
-          loadMoreMajors()
-        }
-      },
-      { threshold: 1 }
-    )
-
-    if (loader.current) {
-      observer.observe(loader.current)
-    }
-
-    return () => observer.disconnect()
-  }, [loading, hasMore])
-
   const filteredMajors = visibleMajors.filter(major =>
-    major.major_name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (selectedCategory === "All" || major.category_name === selectedCategory)
-  )
+    major.major_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleScroll = async () => {
+    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight && !loading && hasMore) {
+      setLoading(true);
+      try {
+        const nextPage = currentPage + 1;
+        const result = await getMajors(nextPage, 20, selectedCategoryId || undefined);
+        setVisibleMajors(prev => [...prev, ...result.data]);
+        setCurrentPage(nextPage);
+        setHasMore(nextPage < result.pagination.total_pages);
+      } catch (error) {
+        console.error('Error fetching more majors:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [loading, hasMore]);
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -193,15 +157,15 @@ export default function AllMajorsPage() {
       >
         {categories.map((category) => (
           <Button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            variant={selectedCategory === category ? "default" : "outline"}
-            className={`${selectedCategory === category
+            key={category.category_id}
+            onClick={() => handleCategoryClick(category)}
+            variant={selectedCategory === category.category_name ? "default" : "outline"}
+            className={`${selectedCategory === category.category_name
                 ? "bg-gradient-to-r from-pink-500 to-yellow-500 text-white"
                 : "text-gray-300 border-gray-600 hover:bg-white hover:bg-opacity-10"
               } transition-all duration-300 ease-in-out transform hover:scale-105`}
           >
-            {category}
+            {category.category_name}
           </Button>
         ))}
       </motion.div>
@@ -230,7 +194,7 @@ export default function AllMajorsPage() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {filteredMajors.map((major) => (
               <Link
-                key={major.major_id}
+                key={`${major.major_id}-${major.category_name}`}
                 href={`/detail/${major.major_id}`}
                 className="text-purple-400 hover:text-purple-300 transition-colors text-sm p-2"
               >
@@ -241,8 +205,7 @@ export default function AllMajorsPage() {
         </CardContent>
       </Card>
 
-      {loading && <p className="text-center mt-4">Loading more majors...</p>}
-      <div ref={loader} className="h-10" />
+      {loading && <p className="text-center mt-4">Loading majors...</p>}
     </main>
 
   )

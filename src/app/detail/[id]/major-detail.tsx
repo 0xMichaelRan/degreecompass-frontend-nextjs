@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Compass, BookOpen, ArrowRight, School, Users, Info } from "lucide-react"
+import {  BookOpen, School, Users, Info } from "lucide-react"
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import {
