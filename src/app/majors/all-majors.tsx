@@ -35,7 +35,9 @@ interface Category {
   category_name: string;
 }
 
-const getMajors = async (page: number = 1, pageSize: number = 20, categoryId?: string): Promise<MajorsResponse> => {
+const PAGE_SIZE = 18;
+
+const getMajors = async (page: number = 1, pageSize: number = PAGE_SIZE, categoryId?: string): Promise<MajorsResponse> => {
   const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`;
   const categoryParam = categoryId ? `&category=${categoryId}` : '';
   const response = await fetch(
@@ -77,7 +79,7 @@ export default function AllMajorsPage() {
     setLoading(true);
     setCurrentPage(1);
     try {
-      const data = await getMajors(1, 20, categoryId);
+      const data = await getMajors(1, PAGE_SIZE, categoryId);
       setVisibleMajors(data.data);
       setHasMore(data.pagination.total_pages > 1);
     } catch (error) {
@@ -117,7 +119,7 @@ export default function AllMajorsPage() {
       setLoading(true);
       try {
         const nextPage = currentPage + 1;
-        const result = await getMajors(nextPage, 20, selectedCategoryId || undefined);
+        const result = await getMajors(nextPage, PAGE_SIZE, selectedCategoryId || undefined);
         setVisibleMajors(prev => [...prev, ...result.data]);
         setCurrentPage(nextPage);
         setHasMore(nextPage < result.pagination.total_pages);
