@@ -40,13 +40,10 @@ const PAGE_SIZE = 18;
 const getMajors = async (page: number = 1, pageSize: number = PAGE_SIZE, categoryId?: string): Promise<MajorsResponse> => {
   const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`;
   const categoryParam = categoryId ? `&category=${categoryId}` : '';
-  const response = await fetch(
+  const { data } = await axios.get<MajorsResponse>(
     `${apiUrl}/api/majors?page=${page}&page_size=${pageSize}${categoryParam}`
   );
-  if (!response.ok) {
-    throw new Error('Failed to fetch majors');
-  }
-  return response.json();
+  return data;
 };
 
 export default function AllMajorsPage() {
