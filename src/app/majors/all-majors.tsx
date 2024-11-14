@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Compass, Search } from "lucide-react"
 import axios from 'axios';
 import { motion } from "framer-motion"
+import { useSearchParams } from 'next/navigation'
 
 
 interface Major {
@@ -47,10 +48,11 @@ const getMajors = async (page: number = 1, pageSize: number = PAGE_SIZE, categor
 };
 
 export default function AllMajorsPage() {
+  const searchParams = useSearchParams();
   const [categories, setCategories] = useState<Category[]>([]);
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("")
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("")
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>(searchParams.get('categoryId') || "")
   const [visibleMajors, setVisibleMajors] = useState<Major[]>([])
   const [loading, setLoading] = useState(false)
   const [totalPages, setTotalPages] = useState<number>(0)
@@ -95,17 +97,23 @@ export default function AllMajorsPage() {
   useEffect(() => {
     const fetchInitialMajors = async () => {
       try {
-        const result = await getMajors(1);
-        const uniqueMajors = Array.from(new Map(result.data.map(major => [major.major_id, major])).values()) as Major[];
-        setVisibleMajors(uniqueMajors);
+        const result = await getMajors(1, PAGE_SIZE, selectedCategoryId || undefined);
+        setVisibleMajors(result.data);
         setTotalPages(result.pagination.total_pages);
+        
+        if (selectedCategoryId) {
+          const category = categories.find(c => c.category_id === selectedCategoryId);
+          if (category) {
+            setSelectedCategory(category.category_name);
+          }
+        }
       } catch (error) {
         console.error('Error fetching initial majors:', error);
       }
     };
 
     fetchInitialMajors();
-  }, []);
+  }, [selectedCategoryId, categories]);
 
   const filteredMajors = visibleMajors.filter(major =>
     major.major_name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -160,6 +168,20 @@ export default function AllMajorsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
+        <Button
+          onClick={() => {
+            setSelectedCategory("");
+            setSelectedCategoryId("");
+            fetchMajorsByCategory("");
+          }}
+          variant={selectedCategory === "" ? "default" : "outline"}
+          className={`${selectedCategory === ""
+            ? "bg-gradient-to-r from-pink-500 to-yellow-500 text-white"
+            : "text-gray-300 border-gray-600 hover:bg-white hover:bg-opacity-10"
+          } transition-all duration-300 ease-in-out transform hover:scale-105`}
+        >
+          All
+        </Button>
         {categories.map((category) => (
           <Button
             key={category.category_id}
