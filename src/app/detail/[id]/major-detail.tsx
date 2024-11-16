@@ -66,7 +66,13 @@ export default function MajorDetailPage() {
 
   return (
       <main className="container mx-auto px-4 py-12 flex-grow">
-        <Link href="/majors" className="text-purple-400 hover:text-purple-300 mb-4 inline-block">
+        <Link 
+          href={majorDetails?.category_name 
+            ? `/majors?categoryId=${majorDetails.major_id.substring(0, 2)}` 
+            : '/majors'
+          } 
+          className="text-purple-400 hover:text-purple-300 mb-4 inline-block"
+        >
           ← Back to Majors
         </Link>
 
