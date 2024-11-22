@@ -8,18 +8,24 @@ import { Compass, Search } from "lucide-react"
 import { useState } from "react"
 
 const majors = [
-  { id: 1, name: "Computer Science", category: "STEM" },
-  { id: 2, name: "Business Administration", category: "Business" },
-  { id: 3, name: "Psychology", category: "Social Sciences" },
-  { id: 4, name: "Mechanical Engineering", category: "STEM" },
-  { id: 5, name: "Biology", category: "STEM" },
-  { id: 6, name: "English Literature", category: "Humanities" },
-  { id: 7, name: "Economics", category: "Social Sciences" },
-  { id: 8, name: "Chemistry", category: "STEM" },
-  { id: 9, name: "Political Science", category: "Social Sciences" },
-  { id: 10, name: "Graphic Design", category: "Arts" },
-  { id: 11, name: "Nursing", category: "Health Sciences" },
-  { id: 12, name: "Marketing", category: "Business" },
+  { id: 1, name: "哲学", category: "01" },
+  { id: 2, name: "逻辑学", category: "01" },
+  { id: 3, name: "宗教学", category: "01" },
+  { id: 4, name: "伦理学", category: "01" },
+  { id: 5, name: "经济学", category: "02" },
+  { id: 6, name: "经济统计学", category: "02" },
+  { id: 7, name: "国民经济管理", category: "02" },
+  { id: 8, name: "资源与环境经济学", category: "12" },
+  { id: 9, name: "商务经济学", category: "02" },
+  { id: 10, name: "能源经济", category: "02" },
+  { id: 11, name: "财政学", category: "03" },
+  { id: 12, name: "税收学", category: "03" },
+  { id: 13, name: "金融学", category: "03" },
+  { id: 14, name: "金融工程", category: "03" },
+  { id: 15, name: "保险学", category: "03" },
+  { id: 16, name: "投资学", category: "03" },
+  { id: 17, name: "金融数学", category: "03" },
+  { id: 18, name: "信用管理", category: "03" },
 ]
 
 export default function MajorListHomePage() {
@@ -52,7 +58,7 @@ export default function MajorListHomePage() {
           <CardContent className="p-6">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredMajors.map((major) => (
-                <Link key={major.id} href={`/majors?cat=${major.id}`} className="text-purple-400 hover:text-purple-300 transition-colors">
+                <Link key={major.id} href={`/majors?categoryId=${major.category}`} className="text-purple-400 hover:text-purple-300 transition-colors">
                   {major.name}
                 </Link>
               ))}

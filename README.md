@@ -15,7 +15,9 @@ pnpm dlx shadcn@latest add tooltip
 
 TODO:
 
-Would be good to integrate the following site:
-
-http://school.nseac.com/spe.php?speid=090103
+* Search function
+* Change all text to Chinese
+* Add Q&A section using LLM
+* User login and register
+* Would be good to integrate the following site: http://school.nseac.com/spe.php?speid=090103
 

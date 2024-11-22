@@ -31,7 +31,7 @@ export function Navigation() {
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">
               <Compass className="h-8 w-8 text-purple-400" />
-              <span className="text-2xl font-bold text-white">DegreeCompass</span>
+              <span className="text-2xl font-bold text-white">小高AI报考助手</span>
             </Link>
             {isLoggedIn ? (
               <>
