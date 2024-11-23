@@ -56,10 +56,13 @@ export default function MajorDetailPage() {
   const [relatedMajors, setRelatedMajors] = useState<Major[]>([])
   const [loading, setLoading] = useState(true)
   const [qaData, setQaData] = useState<QAData[]>([])
-  const [error, setError] = useState<string | null>(null)
+  const [isQALoading, setIsQALoading] = useState(true)
+  const [qaError, setQaError] = useState<string | null>(null)
   const [userQuestion, setUserQuestion] = useState('')
   const [aiResponse, setAiResponse] = useState('')
-  const [introData, setIntroData] = useState<IntroData | null>(null)
+  const [introData, setIntroData] = useState<string>('')
+  const [isIntroLoading, setIsIntroLoading] = useState(true)
+  const [introError, setIntroError] = useState<string | null>(null)
 
   const handleQuestionSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -105,6 +108,54 @@ export default function MajorDetailPage() {
 
     fetchData()
   }, [params.id])
+
+  useEffect(() => {
+    const fetchQAData = async () => {
+      if (!majorDetails?.major_id) return;
+      
+      setIsQALoading(true);
+      setQaError(null);
+      
+      try {
+        const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`;
+        const response = await fetch(`${apiUrl}/api/majors/${majorDetails.major_id}/qa`);
+        if (!response.ok) throw new Error('Failed to fetch Q&A data');
+        const data = await response.json();
+        setQaData(data);
+      } catch (error) {
+        console.error('Error fetching QA data:', error);
+        setQaError(error.message);
+      } finally {
+        setIsQALoading(false);
+      }
+    };
+
+    fetchQAData();
+  }, [majorDetails?.major_id]);
+
+  useEffect(() => {
+    const fetchIntroData = async () => {
+      if (!majorDetails?.major_id) return;
+      
+      setIsIntroLoading(true);
+      setIntroError(null);
+      
+      try {
+        const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`;
+        const response = await fetch(`${apiUrl}/api/majors/${majorDetails.major_id}/intro`);
+        if (!response.ok) throw new Error('Failed to fetch intro data');
+        const data = await response.json();
+        setIntroData(data.data.intro_content);
+      } catch (error) {
+        console.error('Error fetching intro data:', error);
+        setIntroError(error.message);
+      } finally {
+        setIsIntroLoading(false);
+      }
+    };
+
+    fetchIntroData();
+  }, [majorDetails?.major_id]);
 
   if (loading) return <div>Loading...</div>
   if (!majorDetails) return <div>Major not found</div>
@@ -243,9 +294,9 @@ export default function MajorDetailPage() {
             </div>
           </div>
 
-          {error && (
+          {qaError && (
             <div className="text-red-500 py-4">
-              获取专业详情失败: {error}
+              获取专业详情失败: {qaError}
             </div>
           )}
 
@@ -347,7 +398,7 @@ export default function MajorDetailPage() {
         <div className="text-center py-8">
           <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto"></div>
           <p className="mt-2 text-gray-600">加载中...</p>
-        </div>
+        </div> 
       )}
 
     </main>
