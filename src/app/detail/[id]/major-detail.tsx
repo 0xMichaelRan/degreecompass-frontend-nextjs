@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { Textarea } from "@/components/ui/textarea"
 
 interface Major {
@@ -145,10 +146,29 @@ export default function MajorDetailPage() {
           <h1 className="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
             {majorDetails.major_name}
           </h1>
+
           <div className="text-xl text-gray-300 mb-8">
-            <p>abc1: {majorDetails.category_name}</p>
-            <p>abc2: {majorDetails.subject_id}</p>
-            <p>abc3: {majorDetails.subject_name}</p>
+            {introData && (
+              <div className="max-w-4xl mx-auto p-4">
+                <div className="bg-gray-900 rounded-lg shadow-lg p-6">
+                  <div className="prose prose-invert prose-sm max-w-none">
+                    <ReactMarkdown 
+                      remarkPlugins={[remarkGfm]}
+                      className="markdown-content"
+                      components={{
+                        h3: ({node, ...props}) => <h3 className="text-lg font-bold text-purple-400 mt-4 mb-2" {...props} />,
+                        h4: ({node, ...props}) => <h4 className="text-md font-semibold text-purple-300 mt-3 mb-2" {...props} />,
+                        ul: ({node, ...props}) => <ul className="list-disc list-inside mb-3" {...props} />,
+                        li: ({node, ...props}) => <li className="text-gray-200 mb-1" {...props} />,
+                        p: ({node, ...props}) => <p className="text-gray-200 mb-2" {...props} />
+                      }}
+                    >
+                      {introData.intro_content}
+                    </ReactMarkdown>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="flex space-x-4 mb-8">
@@ -242,20 +262,6 @@ export default function MajorDetailPage() {
               </span>
             </div>
           </div>
-
-          {introData && (
-            <div className="max-w-4xl mx-auto p-6 mb-8">
-              <div className="bg-gray-900 rounded-lg shadow-lg p-8">
-                <h2 className="text-2xl font-bold mb-6 text-white">专业介绍</h2>
-                <div className="prose prose-invert prose-lg max-w-none">
-                  <ReactMarkdown>{introData.intro_content}</ReactMarkdown>
-                  <div className="text-sm text-gray-400 mt-4">
-                    最后更新: {new Date(introData.updated_at).toLocaleString('zh-CN')}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {error && (
             <div className="text-red-500 py-4">
