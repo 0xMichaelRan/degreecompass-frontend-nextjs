@@ -1,4 +1,3 @@
-
 Init the project with pnpm:
 
 ```bash
@@ -13,10 +12,16 @@ pnpm dlx shadcn@latest add button input card select table label checkbox
 pnpm dlx shadcn@latest add tooltip
 ```
 
+To support makrdown:
+
+```bash
+pnpm install react-markdown
+pnpm install -D @tailwindcss/typography
+```
+
 TODO:
 
 * Search function
-* Change all text to Chinese
 * Add Q&A section using LLM
 * User login and register
 * Would be good to integrate the following site: http://school.nseac.com/spe.php?speid=090103

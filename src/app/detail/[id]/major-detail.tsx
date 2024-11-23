@@ -12,6 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import ReactMarkdown from 'react-markdown'
 
 interface Major {
   category_name: string;
@@ -31,11 +32,19 @@ interface RelatedMajors {
   };
 }
 
+interface QAData {
+  qa_content: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export default function MajorDetailPage() {
   const params = useParams()
   const [majorDetails, setMajorDetails] = useState<Major | null>(null)
   const [relatedMajors, setRelatedMajors] = useState<Major[]>([])
   const [loading, setLoading] = useState(true)
+  const [qaData, setQaData] = useState<QAData | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,8 +60,15 @@ export default function MajorDetailPage() {
         if (!relatedResponse.ok) throw new Error('Failed to fetch related majors')
         const relatedData: RelatedMajors = await relatedResponse.json()
         setRelatedMajors(relatedData.data.filter(major => major.major_id !== detailsData.major_id))
+
+        const qaResponse = await fetch(`http://localhost:5001/api/majors/${detailsData.major_id}/qa`)
+        if (!qaResponse.ok) {
+          throw new Error('Failed to fetch Q&A data')
+        }
+        const qaData = await qaResponse.json()
+        setQaData(qaData)
       } catch (error) {
-        console.error('Error fetching data:', error)
+        setError(error.message)
       } finally {
         setLoading(false)
       }
@@ -82,9 +98,9 @@ export default function MajorDetailPage() {
               {majorDetails.major_name}
             </h1>
             <div className="text-xl text-gray-300 mb-8">
-              <p>学科门类: {majorDetails.category_name}</p>
-              <p>学科代码: {majorDetails.subject_id}</p>
-              <p>学科名称: {majorDetails.subject_name}</p>
+              <p>abc1: {majorDetails.category_name}</p>
+              <p>abc2: {majorDetails.subject_id}</p>
+              <p>abc3: {majorDetails.subject_name}</p>
             </div>
 
             <div className="flex space-x-4 mb-8">
@@ -195,6 +211,34 @@ export default function MajorDetailPage() {
             </Card>
           </div>
         </div>
+
+        {loading && (
+          <div className="text-center py-8">
+            <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto"></div>
+            <p className="mt-2 text-gray-600">加载中...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="text-red-500 py-4">
+            获取专业详情失败: {error}
+          </div>
+        )}
+
+        {qaData && (
+          <div className="max-w-4xl mx-auto p-6">
+            <div className="bg-white rounded-lg shadow-lg p-8">
+              <h1 className="text-3xl font-bold mb-6">{majorDetails.major_name}</h1>
+              
+              <div className="prose prose-lg max-w-none">
+                <ReactMarkdown>{qaData.qa_content}</ReactMarkdown>
+                <div className="text-sm text-gray-500 mt-4">
+                  最后更新: {new Date(qaData.updated_at).toLocaleString('zh-CN')}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
   )
 }
