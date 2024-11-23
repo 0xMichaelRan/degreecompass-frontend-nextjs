@@ -61,7 +61,7 @@ export default function MajorDetailPage() {
         const relatedData: RelatedMajors = await relatedResponse.json()
         setRelatedMajors(relatedData.data.filter(major => major.major_id !== detailsData.major_id))
 
-        const qaResponse = await fetch(`http://localhost:5001/api/majors/${detailsData.major_id}/qa`)
+        const qaResponse = await fetch(`http://localhost:3458/api/majors/${detailsData.major_id}/qa`)
         if (!qaResponse.ok) {
           throw new Error('Failed to fetch Q&A data')
         }
@@ -194,6 +194,28 @@ export default function MajorDetailPage() {
                 </span>
               </div>
             </div>
+
+
+        {error && (
+          <div className="text-red-500 py-4">
+            获取专业详情失败: {error}
+          </div>
+        )}
+
+        {qaData && (
+          <div className="max-w-4xl mx-auto p-6">
+            <div className="bg-gray-900 rounded-lg shadow-lg p-8">
+              <h1 className="text-3xl font-bold mb-6 text-white">{majorDetails.major_name}</h1>
+              
+              <div className="prose prose-invert prose-lg max-w-none">
+                <ReactMarkdown>{qaData.qa_content}</ReactMarkdown>
+                <div className="text-sm text-gray-400 mt-4">
+                  最后更新: {new Date(qaData.updated_at).toLocaleString('zh-CN')}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
           </div>
 
           <div>
@@ -219,26 +241,6 @@ export default function MajorDetailPage() {
           </div>
         )}
 
-        {error && (
-          <div className="text-red-500 py-4">
-            获取专业详情失败: {error}
-          </div>
-        )}
-
-        {qaData && (
-          <div className="max-w-4xl mx-auto p-6">
-            <div className="bg-white rounded-lg shadow-lg p-8">
-              <h1 className="text-3xl font-bold mb-6">{majorDetails.major_name}</h1>
-              
-              <div className="prose prose-lg max-w-none">
-                <ReactMarkdown>{qaData.qa_content}</ReactMarkdown>
-                <div className="text-sm text-gray-500 mt-4">
-                  最后更新: {new Date(qaData.updated_at).toLocaleString('zh-CN')}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </main>
   )
 }
