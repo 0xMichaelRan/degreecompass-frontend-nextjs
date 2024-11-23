@@ -36,7 +36,10 @@ interface RelatedMajors {
 }
 
 interface QAData {
-  qa_content: string;
+  id: number;
+  major_id: string;
+  question: string;
+  answer: string;
   created_at: string;
   updated_at: string;
 }
@@ -47,35 +50,12 @@ interface IntroData {
   updated_at: string;
 }
 
-const commonQuestions = [
-  {
-    id: 'q1',
-    question: 'What are the career prospects for Computer Science graduates?',
-    answer: 'Computer Science graduates have excellent career prospects. They can pursue roles such as Software Developer, Data Scientist, AI Specialist, Systems Analyst, and Database Administrator. The tech industry is continuously growing, offering numerous opportunities in various sectors.'
-  },
-  {
-    id: 'q2',
-    question: 'How important are math skills for studying Computer Science?',
-    answer: 'Math skills are quite important in Computer Science. You\'ll need a good foundation in areas like discrete mathematics, linear algebra, and calculus. These mathematical concepts are crucial for understanding algorithms, data structures, machine learning, and other core CS topics.'
-  },
-  {
-    id: 'q3',
-    question: 'What programming languages are typically taught in a Computer Science program?',
-    answer: 'Computer Science programs typically teach a variety of programming languages. Common languages include Python, Java, C++, and JavaScript. The focus is often on understanding programming concepts rather than mastering specific languages, as the field evolves rapidly.'
-  },
-  {
-    id: 'q4',
-    question: 'Can I specialize within the Computer Science major?',
-    answer: 'Yes, many Computer Science programs offer specializations or concentrations. Common areas of specialization include Artificial Intelligence, Cybersecurity, Data Science, Software Engineering, and Computer Graphics. These allow you to focus on specific areas of interest within the broader field of Computer Science.'
-  },
-]
-
 export default function MajorDetailPage() {
   const params = useParams()
   const [majorDetails, setMajorDetails] = useState<Major | null>(null)
   const [relatedMajors, setRelatedMajors] = useState<Major[]>([])
   const [loading, setLoading] = useState(true)
-  const [qaData, setQaData] = useState<QAData | null>(null)
+  const [qaData, setQaData] = useState<QAData[]>([])
   const [error, setError] = useState<string | null>(null)
   const [userQuestion, setUserQuestion] = useState('')
   const [aiResponse, setAiResponse] = useState('')
@@ -150,8 +130,8 @@ export default function MajorDetailPage() {
           <div className="text-xl text-gray-300 mb-8">
             {introData && (
               <div className="max-w-4xl mx-auto p-4">
-                <div className="bg-gray-900 rounded-lg shadow-lg p-6">
-                  <div className="prose prose-invert prose-sm max-w-none">
+                {/* <div className="bg-gray-900 rounded-lg shadow-lg p-6"> */}
+                  {/* <div className="prose prose-invert prose-sm max-w-none"> */}
                     <ReactMarkdown 
                       remarkPlugins={[remarkGfm]}
                       className="markdown-content"
@@ -165,8 +145,8 @@ export default function MajorDetailPage() {
                     >
                       {introData.intro_content}
                     </ReactMarkdown>
-                  </div>
-                </div>
+                  {/* </div> */}
+                {/* </div> */}
               </div>
             )}
           </div>
@@ -269,16 +249,26 @@ export default function MajorDetailPage() {
             </div>
           )}
 
-          {qaData && (
+          {qaData.length > 0 && (
             <div className="max-w-4xl mx-auto p-6">
               <div className="bg-gray-900 rounded-lg shadow-lg p-8">
                 <h1 className="text-3xl font-bold mb-6 text-white">{majorDetails.major_name}</h1>
+                
+                <Accordion type="single" collapsible className="w-full">
+                  {qaData.map((qa) => (
+                    <AccordionItem key={qa.id} value={qa.id.toString()}>
+                      <AccordionTrigger className="text-left text-gray-200 hover:text-purple-400">
+                        {qa.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-300">
+                        {qa.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
 
-                <div className="prose prose-invert prose-lg max-w-none">
-                  <ReactMarkdown>{qaData.qa_content}</ReactMarkdown>
-                  <div className="text-sm text-gray-400 mt-4">
-                    最后更新: {new Date(qaData.updated_at).toLocaleString('zh-CN')}
-                  </div>
+                <div className="text-sm text-gray-400 mt-4">
+                  最后更新: {new Date(qaData[0]?.updated_at).toLocaleString('zh-CN')}
                 </div>
               </div>
             </div>
@@ -309,8 +299,8 @@ export default function MajorDetailPage() {
             </CardHeader>
             <CardContent>
               <Accordion type="single" collapsible className="w-full">
-                {commonQuestions.map((q) => (
-                  <AccordionItem key={q.id} value={q.id}>
+                {qaData.map((q) => (
+                  <AccordionItem key={q.id} value={q.id.toString()}>
                     <AccordionTrigger className="text-left text-gray-200 hover:text-purple-400">
                       {q.question}
                     </AccordionTrigger>

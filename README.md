@@ -16,7 +16,7 @@ pnpm dlx shadcn@latest add textarea accordion
 To support makrdown:
 
 ```bash
-pnpm install react-markdown
+pnpm install react-markdown remark-gfm
 pnpm install -D @tailwindcss/typography
 ```
 
