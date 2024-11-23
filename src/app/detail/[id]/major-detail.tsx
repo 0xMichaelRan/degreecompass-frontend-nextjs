@@ -86,19 +86,20 @@ export default function MajorDetailPage() {
         const relatedData: RelatedMajors = await relatedResponse.json()
         setRelatedMajors(relatedData.data.filter(major => major.major_id !== detailsData.major_id))
 
-        const qaResponse = await fetch(`http://localhost:3458/api/majors/${detailsData.major_id}/qa`)
-        if (!qaResponse.ok) {
-          throw new Error('Failed to fetch Q&A data')
-        }
-        const qaData = await qaResponse.json()
-        setQaData(qaData)
+        // const qaResponse = await fetch(`${apiUrl}/api/majors/${detailsData.major_id}/qa`)
+        // if (!qaResponse.ok) {
+        //   throw new Error('Failed to fetch Q&A data')
+        // }
+        // const qaData = await qaResponse.json()
+        // setQaData(qaData)
 
-        const introResponse = await fetch(`${apiUrl}/api/majors/${detailsData.major_id}/intro`)
-        if (!introResponse.ok) {
-          throw new Error('Failed to fetch intro data')
-        }
-        const introData = await introResponse.json()
-        setIntroData(introData.data)
+        // const introResponse = await fetch(`${apiUrl}/api/majors/${detailsData.major_id}/intro`)
+        // if (!introResponse.ok) {
+        //   throw new Error('Failed to fetch intro data')
+        // }
+        // const introData = await introResponse.json()
+        // setIntroData(introData.data)
+
       } catch (error) {
         setError(error.message)
       } finally {
@@ -112,10 +113,10 @@ export default function MajorDetailPage() {
   useEffect(() => {
     const fetchQAData = async () => {
       if (!majorDetails?.major_id) return;
-      
+
       setIsQALoading(true);
       setQaError(null);
-      
+
       try {
         const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`;
         const response = await fetch(`${apiUrl}/api/majors/${majorDetails.major_id}/qa`);
@@ -136,16 +137,16 @@ export default function MajorDetailPage() {
   useEffect(() => {
     const fetchIntroData = async () => {
       if (!majorDetails?.major_id) return;
-      
+
       setIsIntroLoading(true);
       setIntroError(null);
-      
+
       try {
         const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`;
         const response = await fetch(`${apiUrl}/api/majors/${majorDetails.major_id}/intro`);
         if (!response.ok) throw new Error('Failed to fetch intro data');
         const data = await response.json();
-        setIntroData(data.data.intro_content);
+        setIntroData(data.data);
       } catch (error) {
         console.error('Error fetching intro data:', error);
         setIntroError(error.message);
@@ -182,21 +183,21 @@ export default function MajorDetailPage() {
             {introData && (
               <div className="max-w-4xl mx-auto p-4">
                 {/* <div className="bg-gray-900 rounded-lg shadow-lg p-6"> */}
-                  {/* <div className="prose prose-invert prose-sm max-w-none"> */}
-                    <ReactMarkdown 
-                      remarkPlugins={[remarkGfm]}
-                      className="markdown-content"
-                      components={{
-                        h3: ({node, ...props}) => <h3 className="text-lg font-bold text-purple-400 mt-4 mb-2" {...props} />,
-                        h4: ({node, ...props}) => <h4 className="text-md font-semibold text-purple-300 mt-3 mb-2" {...props} />,
-                        ul: ({node, ...props}) => <ul className="list-disc list-inside mb-3" {...props} />,
-                        li: ({node, ...props}) => <li className="text-gray-200 mb-1" {...props} />,
-                        p: ({node, ...props}) => <p className="text-gray-200 mb-2" {...props} />
-                      }}
-                    >
-                      {introData.intro_content}
-                    </ReactMarkdown>
-                  {/* </div> */}
+                {/* <div className="prose prose-invert prose-sm max-w-none"> */}
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  className="markdown-content"
+                  components={{
+                    h3: ({ node, ...props }) => <h3 className="text-lg font-bold text-purple-400 mt-4 mb-2" {...props} />,
+                    h4: ({ node, ...props }) => <h4 className="text-md font-semibold text-purple-300 mt-3 mb-2" {...props} />,
+                    ul: ({ node, ...props }) => <ul className="list-disc list-inside mb-3" {...props} />,
+                    li: ({ node, ...props }) => <li className="text-gray-200 mb-1" {...props} />,
+                    p: ({ node, ...props }) => <p className="text-gray-200 mb-2" {...props} />
+                  }}
+                >
+                  {introData.intro_content}
+                </ReactMarkdown>
+                {/* </div> */}
                 {/* </div> */}
               </div>
             )}
@@ -294,36 +295,6 @@ export default function MajorDetailPage() {
             </div>
           </div>
 
-          {qaError && (
-            <div className="text-red-500 py-4">
-              获取专业详情失败: {qaError}
-            </div>
-          )}
-
-          {qaData.length > 0 && (
-            <div className="max-w-4xl mx-auto p-6">
-              <div className="bg-gray-900 rounded-lg shadow-lg p-8">
-                <h1 className="text-3xl font-bold mb-6 text-white">{majorDetails.major_name}</h1>
-                
-                <Accordion type="single" collapsible className="w-full">
-                  {qaData.map((qa) => (
-                    <AccordionItem key={qa.id} value={qa.id.toString()}>
-                      <AccordionTrigger className="text-left text-gray-200 hover:text-purple-400">
-                        {qa.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-gray-300">
-                        {qa.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-
-                <div className="text-sm text-gray-400 mt-4">
-                  最后更新: {new Date(qaData[0]?.updated_at).toLocaleString('zh-CN')}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         <div>
@@ -361,6 +332,12 @@ export default function MajorDetailPage() {
                   </AccordionItem>
                 ))}
               </Accordion>
+          {qaError && (
+            <div className="text-red-500 py-4">
+              获取专业详情失败: {qaError}
+            </div>
+              )}
+
             </CardContent>
           </Card>
 
@@ -398,7 +375,7 @@ export default function MajorDetailPage() {
         <div className="text-center py-8">
           <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto"></div>
           <p className="mt-2 text-gray-600">加载中...</p>
-        </div> 
+        </div>
       )}
 
     </main>
