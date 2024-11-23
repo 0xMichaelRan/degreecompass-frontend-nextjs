@@ -40,7 +40,11 @@ interface QAData {
   updated_at: string;
 }
 
-
+interface IntroData {
+  intro_content: string;
+  created_at: string;
+  updated_at: string;
+}
 
 const commonQuestions = [
   {
@@ -65,7 +69,6 @@ const commonQuestions = [
   },
 ]
 
-
 export default function MajorDetailPage() {
   const params = useParams()
   const [majorDetails, setMajorDetails] = useState<Major | null>(null)
@@ -75,6 +78,7 @@ export default function MajorDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [userQuestion, setUserQuestion] = useState('')
   const [aiResponse, setAiResponse] = useState('')
+  const [introData, setIntroData] = useState<IntroData | null>(null)
 
   const handleQuestionSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -104,6 +108,13 @@ export default function MajorDetailPage() {
         }
         const qaData = await qaResponse.json()
         setQaData(qaData)
+
+        const introResponse = await fetch(`${apiUrl}/api/majors/${detailsData.major_id}/intro`)
+        if (!introResponse.ok) {
+          throw new Error('Failed to fetch intro data')
+        }
+        const introData = await introResponse.json()
+        setIntroData(introData.data)
       } catch (error) {
         setError(error.message)
       } finally {
@@ -169,7 +180,7 @@ export default function MajorDetailPage() {
           <div className="mb-8">
             <h2 className="text-2xl font-semibold mb-4 flex items-center">
               <Users className="h-5 w-5 mr-2 text-purple-400" />
-              Related Majors
+              相关专业学科
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
@@ -232,6 +243,19 @@ export default function MajorDetailPage() {
             </div>
           </div>
 
+          {introData && (
+            <div className="max-w-4xl mx-auto p-6 mb-8">
+              <div className="bg-gray-900 rounded-lg shadow-lg p-8">
+                <h2 className="text-2xl font-bold mb-6 text-white">专业介绍</h2>
+                <div className="prose prose-invert prose-lg max-w-none">
+                  <ReactMarkdown>{introData.intro_content}</ReactMarkdown>
+                  <div className="text-sm text-gray-400 mt-4">
+                    最后更新: {new Date(introData.updated_at).toLocaleString('zh-CN')}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="text-red-500 py-4">
@@ -266,6 +290,58 @@ export default function MajorDetailPage() {
                 <p className="text-gray-300">所属门类: {majorDetails.category_name}</p>
                 <p className="text-gray-300">所属学科: {majorDetails.subject_name}</p>
               </div>
+            </CardContent>
+          </Card>
+
+
+          <Card className="mt-8 bg-gray-800 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-2xl font-semibold text-white flex items-center">
+                <Info className="h-5 w-5 mr-2 text-purple-400" />
+                Q&A
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Accordion type="single" collapsible className="w-full">
+                {commonQuestions.map((q) => (
+                  <AccordionItem key={q.id} value={q.id}>
+                    <AccordionTrigger className="text-left text-gray-200 hover:text-purple-400">
+                      {q.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      {q.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
+          </Card>
+
+          <Card className="mt-8 bg-gray-800 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-2xl font-semibold text-white flex items-center">
+                <Send className="h-5 w-5 mr-2 text-purple-400" />
+                我来提问
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleQuestionSubmit} className="space-y-4">
+                <Textarea
+                  placeholder="Type your question here..."
+                  value={userQuestion}
+                  onChange={(e) => setUserQuestion(e.target.value)}
+                  className="w-full bg-gray-700 text-gray-200 border-gray-600 focus:border-purple-400"
+                />
+                <Button type="submit" className="bg-purple-500 hover:bg-purple-600 text-white">
+                  Submit Question
+                </Button>
+              </form>
+              {aiResponse && (
+                <div className="mt-4 p-4 bg-gray-700 rounded-md">
+                  <h3 className="text-lg font-semibold text-purple-400 mb-2">AI Response:</h3>
+                  <p className="text-gray-200">{aiResponse}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
