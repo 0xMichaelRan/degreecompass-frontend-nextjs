@@ -2,8 +2,9 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import {  BookOpen, School, Users, Info } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card" 
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import {  BookOpen, School, Users, Info, Send } from "lucide-react"
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import {
@@ -13,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import ReactMarkdown from 'react-markdown'
+import { Textarea } from "@/components/ui/textarea"
 
 interface Major {
   category_name: string;
@@ -38,6 +40,32 @@ interface QAData {
   updated_at: string;
 }
 
+
+
+const commonQuestions = [
+  {
+    id: 'q1',
+    question: 'What are the career prospects for Computer Science graduates?',
+    answer: 'Computer Science graduates have excellent career prospects. They can pursue roles such as Software Developer, Data Scientist, AI Specialist, Systems Analyst, and Database Administrator. The tech industry is continuously growing, offering numerous opportunities in various sectors.'
+  },
+  {
+    id: 'q2',
+    question: 'How important are math skills for studying Computer Science?',
+    answer: 'Math skills are quite important in Computer Science. You\'ll need a good foundation in areas like discrete mathematics, linear algebra, and calculus. These mathematical concepts are crucial for understanding algorithms, data structures, machine learning, and other core CS topics.'
+  },
+  {
+    id: 'q3',
+    question: 'What programming languages are typically taught in a Computer Science program?',
+    answer: 'Computer Science programs typically teach a variety of programming languages. Common languages include Python, Java, C++, and JavaScript. The focus is often on understanding programming concepts rather than mastering specific languages, as the field evolves rapidly.'
+  },
+  {
+    id: 'q4',
+    question: 'Can I specialize within the Computer Science major?',
+    answer: 'Yes, many Computer Science programs offer specializations or concentrations. Common areas of specialization include Artificial Intelligence, Cybersecurity, Data Science, Software Engineering, and Computer Graphics. These allow you to focus on specific areas of interest within the broader field of Computer Science.'
+  },
+]
+
+
 export default function MajorDetailPage() {
   const params = useParams()
   const [majorDetails, setMajorDetails] = useState<Major | null>(null)
@@ -45,7 +73,16 @@ export default function MajorDetailPage() {
   const [loading, setLoading] = useState(true)
   const [qaData, setQaData] = useState<QAData | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [userQuestion, setUserQuestion] = useState('')
+  const [aiResponse, setAiResponse] = useState('')
 
+  const handleQuestionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    // In a real application, you would send the question to your backend here
+    // For now, we'll just simulate a response
+    setAiResponse('Thank you for your question. An AI-generated response would appear here in a real application.')
+    setUserQuestion('')
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -241,6 +278,58 @@ export default function MajorDetailPage() {
           </div>
         )}
 
+
+<Card className="mt-8 bg-gray-800 border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold text-white flex items-center">
+            <Info className="h-5 w-5 mr-2 text-purple-400" />
+            Frequently Asked Questions
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Accordion type="single" collapsible className="w-full">
+            {commonQuestions.map((q) => (
+              <AccordionItem key={q.id} value={q.id}>
+                <AccordionTrigger className="text-left text-gray-200 hover:text-purple-400">
+                  {q.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-300">
+                  {q.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </CardContent>
+      </Card>
+
+      <Card className="mt-8 bg-gray-800 border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold text-white flex items-center">
+            <Send className="h-5 w-5 mr-2 text-purple-400" />
+            Ask Your Own Question
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleQuestionSubmit} className="space-y-4">
+            <Textarea
+              placeholder="Type your question here..."
+              value={userQuestion}
+              onChange={(e) => setUserQuestion(e.target.value)}
+              className="w-full bg-gray-700 text-gray-200 border-gray-600 focus:border-purple-400"
+            />
+            <Button type="submit" className="bg-purple-500 hover:bg-purple-600 text-white">
+              Submit Question
+            </Button>
+          </form>
+          {aiResponse && (
+            <div className="mt-4 p-4 bg-gray-700 rounded-md">
+              <h3 className="text-lg font-semibold text-purple-400 mb-2">AI Response:</h3>
+              <p className="text-gray-200">{aiResponse}</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+      
       </main>
   )
 }
