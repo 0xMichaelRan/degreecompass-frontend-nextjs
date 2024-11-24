@@ -63,13 +63,45 @@ export default function MajorDetailPage() {
   const [introData, setIntroData] = useState<string>('')
   const [isIntroLoading, setIsIntroLoading] = useState(true)
   const [introError, setIntroError] = useState<string | null>(null)
+  const [isAiLoading, setIsAiLoading] = useState(false)
 
   const handleQuestionSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In a real application, you would send the question to your backend here
-    // For now, we'll just simulate a response
-    setAiResponse('Thank you for your question. An AI-generated response would appear here in a real application.')
-    setUserQuestion('')
+    if (!userQuestion.trim() || !majorDetails) return
+
+    setIsAiLoading(true)
+    setAiResponse('')
+
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`
+      const response = await fetch(`${apiUrl}/api/majors/${majorDetails.major_id}/ask`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          question: userQuestion,
+          context: {
+            major_name: majorDetails.major_name,
+            major_id: majorDetails.major_id,
+            intro_content: introData,
+          }
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to get AI response')
+      }
+
+      const data = await response.json()
+      setAiResponse(data.answer)
+      setUserQuestion('')
+    } catch (error) {
+      console.error('Error getting AI response:', error)
+      setAiResponse('Sorry, I encountered an error while processing your question. Please try again.')
+    } finally {
+      setIsAiLoading(false)
+    }
   }
   useEffect(() => {
     const fetchData = async () => {
@@ -85,20 +117,6 @@ export default function MajorDetailPage() {
         if (!relatedResponse.ok) throw new Error('Failed to fetch related majors')
         const relatedData: RelatedMajors = await relatedResponse.json()
         setRelatedMajors(relatedData.data.filter(major => major.major_id !== detailsData.major_id))
-
-        // const qaResponse = await fetch(`${apiUrl}/api/majors/${detailsData.major_id}/qa`)
-        // if (!qaResponse.ok) {
-        //   throw new Error('Failed to fetch Q&A data')
-        // }
-        // const qaData = await qaResponse.json()
-        // setQaData(qaData)
-
-        // const introResponse = await fetch(`${apiUrl}/api/majors/${detailsData.major_id}/intro`)
-        // if (!introResponse.ok) {
-        //   throw new Error('Failed to fetch intro data')
-        // }
-        // const introData = await introResponse.json()
-        // setIntroData(introData.data)
 
       } catch (error) {
         setError(error.message)
@@ -356,8 +374,17 @@ export default function MajorDetailPage() {
                   onChange={(e) => setUserQuestion(e.target.value)}
                   className="w-full bg-gray-700 text-gray-200 border-gray-600 focus:border-purple-400"
                 />
-                <Button type="submit" className="bg-purple-500 hover:bg-purple-600 text-white">
-                  问问AI
+                <Button 
+                  type="submit" 
+                  className="bg-purple-500 hover:bg-purple-600 text-white"
+                  disabled={isAiLoading || !userQuestion.trim()}
+                >
+                  {isAiLoading ? (
+                    <span className="flex items-center">
+                      <span className="animate-spin h-4 w-4 mr-2 border-2 border-white border-t-transparent rounded-full" />
+                      处理中...
+                    </span>
+                  ) : '问问AI'}
                 </Button>
               </form>
               {aiResponse && (
