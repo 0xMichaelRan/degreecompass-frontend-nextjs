@@ -363,15 +363,21 @@ export default function MajorDetailPage() {
             <CardHeader>
               <CardTitle className="text-2xl font-semibold text-white flex items-center">
                 <Send className="h-5 w-5 mr-2 text-purple-400" />
-                我来提问
+                我来问问
               </CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleQuestionSubmit} className="space-y-4">
                 <Textarea
-                  placeholder="请随意发问..."
+                  placeholder="我想问问..."
                   value={userQuestion}
                   onChange={(e) => setUserQuestion(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleQuestionSubmit(e);
+                    }
+                  }}
                   className="w-full bg-gray-700 text-gray-200 border-gray-600 focus:border-purple-400"
                 />
                 <Button 

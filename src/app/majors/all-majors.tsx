@@ -82,11 +82,20 @@ export default function AllMajorsPage() {
         if (!response.ok) throw new Error('Failed to fetch categories')
         const data = await response.json()
         setCategories(data.data)
+
+        // **New Addition: Handle Initial Category Selection**
+        if (selectedCategoryId) {
+          const initialCategory = data.data.find(cat => cat.category_id === selectedCategoryId)
+          if (initialCategory) {
+            handleCategorySelect(initialCategory.category_id, initialCategory.category_name)
+          }
+        }
       } catch (error) {
         console.error('Error fetching categories:', error)
       }
     }
     fetchCategories()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Handlers
