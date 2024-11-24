@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,6 +9,7 @@ import { Compass, Search } from "lucide-react"
 import axios from 'axios';
 import { motion } from "framer-motion"
 import { useSearchParams, useRouter } from 'next/navigation'
+import { debounce } from 'lodash'
 
 
 interface Major {
@@ -124,9 +125,45 @@ export default function AllMajorsPage() {
     fetchInitialMajors();
   }, [selectedCategoryId, categories]);
 
-  const filteredMajors = visibleMajors.filter(major =>
-    major.major_name.toLowerCase().includes(searchTerm.toLowerCase())
+  const searchMajors = async (keyword: string) => {
+    if (!keyword.trim()) {
+      const result = await getMajors(1, PAGE_SIZE, selectedCategoryId || undefined);
+      setVisibleMajors(result.data);
+      setTotalPages(result.pagination.total_pages);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`;
+      const { data } = await axios.get<MajorsResponse>(
+        `${apiUrl}/api/majors/search?keyword=${encodeURIComponent(keyword)}&page=1&page_size=${PAGE_SIZE}`
+      );
+      setVisibleMajors(data.data);
+      setTotalPages(data.pagination.total_pages);
+      setCurrentPage(1);
+      setHasMore(data.pagination.total_pages > 1);
+    } catch (error) {
+      console.error('Error searching majors:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Add debounced search
+  const debouncedSearch = useCallback(
+    debounce((keyword: string) => {
+      searchMajors(keyword);
+    }, 300),
+    [selectedCategoryId]
   );
+
+  // Update search input handler
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = e.target.value;
+    setSearchTerm(keyword);
+    debouncedSearch(keyword);
+  };
 
   const loadMoreMajors = async () => {
     if (!loading && hasMore) {
@@ -197,10 +234,10 @@ export default function AllMajorsPage() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <Input
               type="search"
-              placeholder="Search majors..."
+              placeholder="搜索专业..."
               className="pl-10 bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-purple-500 focus:border-purple-500"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearch}
             />
           </div>
         </div>
@@ -209,7 +246,7 @@ export default function AllMajorsPage() {
       <Card className="bg-gray-800 border-gray-700">
         <CardContent className="p-4">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {filteredMajors.map((major) => (
+            {visibleMajors.map((major) => (
               <Link
                 key={`${major.major_id}-${major.category_name}`}
                 href={`/detail/${major.major_id}`}

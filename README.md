@@ -20,6 +20,13 @@ pnpm install react-markdown remark-gfm
 pnpm install -D @tailwindcss/typography
 ```
 
+To use lodash:
+
+```bash
+pnpm install lodash
+pnpm install --save-dev @types/lodash
+```
+
 TODO:
 
 * Search function
