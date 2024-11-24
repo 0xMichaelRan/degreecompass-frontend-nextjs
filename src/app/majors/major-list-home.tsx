@@ -37,9 +37,6 @@ export default function MajorListHomePage() {
 
   return (
       <main className="container mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-          Explore Majors
-        </h1>
 
         <div className="mb-8">
           <div className="relative max-w-md mx-auto">
