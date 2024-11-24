@@ -351,13 +351,13 @@ export default function MajorDetailPage() {
             <CardContent>
               <form onSubmit={handleQuestionSubmit} className="space-y-4">
                 <Textarea
-                  placeholder="Type your question here..."
+                  placeholder="请随意发问..."
                   value={userQuestion}
                   onChange={(e) => setUserQuestion(e.target.value)}
                   className="w-full bg-gray-700 text-gray-200 border-gray-600 focus:border-purple-400"
                 />
                 <Button type="submit" className="bg-purple-500 hover:bg-purple-600 text-white">
-                  Submit Question
+                  问问AI
                 </Button>
               </form>
               {aiResponse && (

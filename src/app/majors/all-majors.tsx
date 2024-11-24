@@ -175,7 +175,7 @@ export default function AllMajorsPage() {
             : "text-gray-300 border-gray-600 hover:bg-white hover:bg-opacity-10"
           } transition-all duration-300 ease-in-out transform hover:scale-105`}
         >
-          All
+          全部专业
         </Button>
         {categories.map((category) => (
           <Button
@@ -192,23 +192,18 @@ export default function AllMajorsPage() {
         ))}
       </motion.div>
 
-      <motion.div
-        className="mb-8 max-w-2xl mx-auto"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <Input
-            type="search"
-            placeholder="Search majors..."
-            className="pl-10 bg-white bg-opacity-10 border-gray-600 text-white placeholder-gray-400 focus:ring-pink-500 focus:border-pink-500 w-full backdrop-blur-sm"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+      <div className="mb-8">
+          <div className="relative max-w-md mx-auto">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Input
+              type="search"
+              placeholder="Search majors..."
+              className="pl-10 bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-purple-500 focus:border-purple-500"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
-      </motion.div>
 
 
       <Card className="bg-gray-800 border-gray-700">
