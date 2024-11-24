@@ -74,7 +74,7 @@ export default function AllMajorsPage() {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [hasMore, setHasMore] = useState<boolean>(true)
 
-  // Fetch Categories
+  // Fetch Categories and Initial Majors
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -83,12 +83,22 @@ export default function AllMajorsPage() {
         const data = await response.json()
         setCategories(data.data)
 
-        // **New Addition: Handle Initial Category Selection**
+        // **New Addition: Handle Initial Category Selection or Fetch Initial Majors**
         if (selectedCategoryId) {
           const initialCategory = data.data.find(cat => cat.category_id === selectedCategoryId)
           if (initialCategory) {
             handleCategorySelect(initialCategory.category_id, initialCategory.category_name)
+          } else {
+            // If the categoryId from searchParams is invalid, fetch the first page of majors
+            const initialMajors = await fetchMajors(1, PAGE_SIZE)
+            setVisibleMajors(initialMajors.data)
+            setHasMore(initialMajors.pagination.total_pages > 1)
           }
+        } else {
+          // Fetch initial majors with default page=1 and PAGE_SIZE
+          const initialMajors = await fetchMajors(1, PAGE_SIZE)
+          setVisibleMajors(initialMajors.data)
+          setHasMore(initialMajors.pagination.total_pages > 1)
         }
       } catch (error) {
         console.error('Error fetching categories:', error)
@@ -105,6 +115,7 @@ export default function AllMajorsPage() {
         const result = await fetchMajors(1, PAGE_SIZE, selectedCategoryId)
         setVisibleMajors(result.data)
         setHasMore(result.pagination.total_pages > 1)
+        setCurrentPage(1)
         return
       }
 
