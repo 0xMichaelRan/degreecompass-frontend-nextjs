@@ -6,6 +6,19 @@
 
 希望对大家有帮助！
 
+# 项目结构
+```
+frontend-nextjs/
+├── README.md          # Project documentation
+├── package.json       # Project dependencies and scripts
+├── public             # Static files
+├── src                # Source code
+│   ├── app            # Application logic
+│   ├── components     # Reusable UI components
+│   ├── lib            # Library functions
+│   ├── types          # TypeScript types
+│   └── utils          # Utility functions
+
 # Setup
 
 Init the project with pnpm:
@@ -37,4 +50,4 @@ pnpm install lodash
 pnpm install --save-dev @types/lodash
 ```
 
-For more information, please refer to the [backend-flask README](./backend-flask/README.md).
+For more information, please refer to the [backend-flask README](https://github.com/0xMichaelRan/flask-degree-compass/blob/main/README.md).
